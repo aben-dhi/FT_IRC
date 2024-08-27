@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   File.hpp                                           :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/04 21:56:11 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/04 21:56:30 by aben-dhi         ###   ########.fr       */
+/*   Created: 2024/07/26 00:41:58 by aben-dhi          #+#    #+#             */
+/*   Updated: 2024/08/17 17:18:36 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_HPP
-# define FILE_HPP
+#include "includes/Server.hpp"
 
-class File
+int main(int argc, char **argv)
 {
-};
-
-#endif
+	if (argc != 3)
+	{
+		std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
+		return (1);
+	}
+	Server server("IRC", argv[2], 10, argv[1]);
+	try
+	{
+		server._run();
+	}
+	catch(const std::exception& e) 
+	{
+		std::cerr << e.what() << '\n';
+	}
+	return (0);
+}

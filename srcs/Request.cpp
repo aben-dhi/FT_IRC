@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/26 00:41:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/05 13:01:50 by aben-dhi         ###   ########.fr       */
+/*   Created: 2024/08/09 13:11:41 by aben-dhi          #+#    #+#             */
+/*   Updated: 2024/08/09 13:12:40 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/Server.hpp"
+#include "../includes/Request.hpp"
 
-int main(int argc, char **argv)
+Request::Request() : _command(), _args(), _isValid(false)
 {
-	if (argc != 3)
+}
+
+Request::Request(const Request &src)
+{
+	*this = src;
+}
+
+Request &Request::operator=(const Request &src)
+{
+	if (this != &src)
 	{
-		std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
-		return (1);
+		this->_command = src._command;
+		this->_args = src._args;
+		this->_isValid = src._isValid;
 	}
-	Server server("IRC", argv[2], 10, argv[1]);
-	try
-	{
-		server._run();
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	return (0);
+	return (*this);
+}
+
+Request::~Request()
+{
 }

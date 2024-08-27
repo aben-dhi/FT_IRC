@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:49:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/05 22:50:21 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:57:14 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define PURPLE "\e[1;35m"
 # define BLUE "\e[1;34m"
 
+class Channel;
+
 struct Modes
 {
 	bool	away;
@@ -33,6 +35,9 @@ struct Modes
 	bool	local;
 	bool	server;
 };
+
+const std::string currentDateTime();
+std::string fill(std::string str, size_t len);
 
 class Client
 {
@@ -87,10 +92,11 @@ class Client
 		void	setModes(int value, char mode);
 		void	setChannel(std::string channel, Channel *channel_ptr);
 		void	removeChannel(std::string channel);
-		std::string	leaveAllC(std::string channel);
+		std::string	leaveAllC();
 
 		int	isJoined(std::string channel) const;
 		void	joinChannel(std::string ChannelName, Channel *channel);
-};
+		std::string joinedChannels() const;
+};	
 
 #endif

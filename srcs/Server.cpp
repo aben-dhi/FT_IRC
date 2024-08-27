@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:45:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/04 23:27:01 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:22:30 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	Server::_newClient()
 
 void	Server::_run()
 {
-	while (1)
+	while (77)
 	{
 		int poll_ct = poll(this->_pfds, this->_online_c, -1);
 		if (poll_ct == -1)
@@ -96,7 +96,7 @@ void	Server::_run()
 				if (i == 0)
 					_newClient();
 				else
-					_clientRequest(i);
+					_ClientRequest(i);
 			}
 		}
 	}

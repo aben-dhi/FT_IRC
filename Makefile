@@ -1,7 +1,28 @@
 SRCS =	main.cpp \
 		srcs/Server.cpp \
+		srcs/Client.cpp \
+		srcs/Channel.cpp \
+		srcs/Request.cpp \
+		srcs/File.cpp \
+		srcs/Client1.cpp \
+		srcs/Join.cpp\
+		srcs/Kick.cpp\
+		srcs/Part.cpp\
+		srcs/privMsg.cpp\
+		srcs/RoboServ.cpp\
+		srcs/commands.cpp\
+		srcs/getSocket.cpp\
+		srcs/message.cpp\
+		srcs/pollHandling.cpp\
+		srcs/requestHandling.cpp\
+		srcs/transferFile.cpp\
+		srcs/utils.cpp\
 
 HDRS = includes/Server.hpp \
+		includes/Client.hpp \
+		includes/Channel.hpp \
+		includes/Request.hpp \
+		includes/File.hpp \
 
 NAME = ircserv
 

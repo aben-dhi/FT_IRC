@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:41:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/07 22:01:05 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:09:57 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	Server::_sendAll(int fd, std::string message)
 	int bytesleft = message.length();
 	int n;
 
-	while (total < message.length())
+	while (total < (int)message.length())
 	{
 		n = send(fd, message.c_str() + total, bytesleft, 0);
 		if (n == -1)
@@ -51,7 +51,7 @@ int	Server::_sendAll(int fd, std::string message)
 
 std::string	Server::_sendToEveryone(Channel *Channel, std::string message, int fd)
 {
-	std::map<int, Client*> allUsers = Channel->getUsers();
+	std::map<int, Client*> allUsers = Channel->getAllUsers();
 	std::map<int, Client*>::iterator it = allUsers.begin();
 	std::string msg = this->_clients[fd]->getUserprefix();
 	msg.append(message);

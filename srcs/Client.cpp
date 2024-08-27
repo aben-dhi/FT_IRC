@@ -6,17 +6,17 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:17:15 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/05 22:52:49 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:56:58 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Client.hpp"
 
-Client::Client() : _clientfd(0), _auth(false), _registered(false), _isop(false), _username(), _nickname(), _realname(), _hostname("IRC"), _ID(), _remoteaddr(), _remoteaddr_len(0), _modes(), _isChannel()
+Client::Client() : _clientfd(0), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _modes(), _remoteaddr_len(0), _isChannel()
 {
 }
 
-Client::Client(int fd) : _clientfd(fd), _auth(false), _registered(false), _isop(false), _username(), _nickname(), _realname(), _hostname("IRC"), _ID(), _remoteaddr(), _remoteaddr_len(0), _modes(), _isChannel()
+Client::Client(int fd) : _clientfd(fd), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _modes(), _remoteaddr_len(0), _isChannel()
 {
 }
 
@@ -40,7 +40,7 @@ Client &Client::operator=(const Client &src)
 		this->_remoteaddr = src._remoteaddr;
 		this->_remoteaddr_len = src._remoteaddr_len;
 		this->_modes = src._modes;
-		this->_isChannel = src._isChannel;
+		this->_isChannel.insert(src._isChannel.begin(), src._isChannel.end());
 	}
 	return (*this);
 }
@@ -94,17 +94,17 @@ bool	Client::getAuth() const {return (this->_auth);}
 int	Client::getRegistered() const {return (this->_registered);}
 int	Client::getIsop() const {return (this->_isop);}
 int	Client::getModes(char mode) const {
-	if (mode = 'a')
+	if (mode == 'a')
 		return (this->_modes.invisible);
-	else if (mode = 'w')
+	else if (mode == 'w')
 		return (this->_modes.wallops);
-	else if (mode = 'r')
+	else if (mode == 'r')
 		return (this->_modes.rest);
-	else if (mode = 'o')
+	else if (mode == 'o')
 		return (this->_modes.oper);
-	else if (mode = 'l')
+	else if (mode == 'l')
 		return (this->_modes.local);
-	else if (mode = 's')
+	else if (mode == 's')
 		return (this->_modes.server);
 	return (0);
 }
@@ -126,14 +126,14 @@ std::string	Client::getUserInfo() const {
 
 std::map<std::string, Channel*>	Client::getUserChannel() const {return (this->_isChannel);}
 
-std::string Client::leaveAllC(std::string channel)
+std::string Client::leaveAllC()
 {
 	std::map<std::string, Channel*>::iterator it = this->_isChannel.begin();
 	while(it != this->_isChannel.end())
 	{
-		std::pair<Client *, int> user = it->second->getClientRole(this->_nickname);
+		std::pair<Client *, int> user = it->second->findUserRole(this->_clientfd);
 		if (user.second == 0)
-			it->second->removeClient(this->_clientfd);
+			it->second->removeMember(this->_clientfd);
 		else if (user.second == 1)
 			it->second->removeOperator(this->_clientfd);
 		else
@@ -167,3 +167,5 @@ void	Client::joinChannel( std::string ChannelName, Channel *channel )
 	if (!isJoined(ChannelName))
 		this->_isChannel.insert(std::pair<std::string, Channel *>(ChannelName, channel));
 };
+
+
