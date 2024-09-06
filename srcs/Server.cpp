@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:45:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 17:22:30 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:49:00 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	Server::_run()
 		
 		for (int i = 0; i < this->_online_c; i++)
 		{
-			if (this->_pfds->revents & POLLIN)
+			if (this->_pfds[i].revents & POLLIN)
 			{
 				if (i == 0)
 					_newClient();

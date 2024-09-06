@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:50:20 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 17:09:02 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:55:01 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ std::string	Server::_getBotMessage()
 	Greeting.append("██████████████████████████████████████████████████████████████████████████████████\n");
 
 	Greeting.append(BLUE "█                                                                                █\n");
-	Greeting.append(BLUE "█\t" RED " Usage: RoboServ [COMMAND_NUMBER] [MORE_OPTIONS]" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append(BLUE "█\t" RED " Usage: ROBOSERV [COMMAND_NUMBER] [MORE_OPTIONS]" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
 	Greeting.append(BLUE "█\t How Can I Help You: (You can use The following list of commands)\r\t\t\t\t\t\t\t\t\t\t █\n");
 	Greeting.append(BLUE "█\t " CYAN "[0]" RESET " : to List all Your stats" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
 	Greeting.append(BLUE "█\t " CYAN "[1]" RESET " : to List all Your Joined Channels" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");

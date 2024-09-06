@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:29:50 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/04 23:33:20 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:38:52 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	Server::_getSocket(std::string port)
 	for (p = servinfo; p != NULL; p = p->ai_next)
 	{
 		this->_socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-		if (this->_socketfd == -1)
+		if (this->_socketfd < 0)
 			continue;
 		setsockopt(this->_socketfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
 		if (bind(this->_socketfd, p->ai_addr, p->ai_addrlen) < 0)

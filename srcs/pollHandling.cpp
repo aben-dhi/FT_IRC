@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:35:06 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/04 23:40:01 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:46:22 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	Server::_addToPoll(int fd)
 	if (this->_online_c == this->_max_c)
 	{
 		this->_max_c *= 2;
-		this->_pfds = (struct pollfd*)realloc(this->_pfds, this->_max_c);
+		this->_pfds = (struct pollfd *)realloc(this->_pfds, this->_max_c);
 	}
 	this->_pfds[this->_online_c].fd = fd;
 	this->_pfds[this->_online_c].events = POLLIN;
