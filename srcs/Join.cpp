@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 23:37:18 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 17:03:42 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/09/13 01:26:36 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ std::string	Server::_joinChannel( Request request, int i )
 	if (request._args[0] == "0")
 		return(this->_clients[i]->leaveAllC());
 	std::vector<std::string> parsChannels(_commaSeparator(request._args[0]));
-		std::vector<std::string> parsKeys;
+	std::vector<std::string> parsKeys;
 	if (request._args.size() == 2)
 		parsKeys = _commaSeparator(request._args[1]);
 	std::vector<std::string>::iterator itChannels = parsChannels.begin();
