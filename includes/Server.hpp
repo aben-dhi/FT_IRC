@@ -31,6 +31,7 @@
 #include <netdb.h>
 #include <poll.h>
 #include <time.h>
+#include <fcntl.h>
 #include "../includes/Request.hpp"
 #include "../includes/Channel.hpp"
 #include "../includes/File.hpp"

@@ -32,9 +32,11 @@ void	Server::_getSocket(std::string port)
 	for (p = servinfo; p != NULL; p = p->ai_next)
 	{
 		this->_socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-		if (this->_socketfd < 0)
-			continue;
+		if (this->_socketfd == -1)
+			throw std::runtime_error("Failed to Create Socket");
 		setsockopt(this->_socketfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+		if(fcntl(this->_socketfd, F_SETFL, O_NONBLOCK) == -1)
+			throw std::runtime_error("Failed to Set Socket fd to NONBLOCK");
 		if (bind(this->_socketfd, p->ai_addr, p->ai_addrlen) < 0)
 		{
 			close(this->_socketfd);

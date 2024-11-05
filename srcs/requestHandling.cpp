@@ -16,8 +16,8 @@ void	Server::_ClientRequest(int i)
 {
 	char buffer[6000];
 	int sender_fd = this->_pfds[i].fd;
-	int nbytes = recv(sender_fd, buffer, sizeof(buffer), 0);
-	
+	int nbytes = recv(sender_fd, buffer, sizeof(buffer) - 1, 0);
+	buffer[nbytes] = '\0';
 	if (nbytes <= 0)
 	{
 		if (nbytes == 0)
@@ -30,8 +30,8 @@ void	Server::_ClientRequest(int i)
 	else
 	{
 		std::string message(buffer, strlen(buffer) - 1);
-		if (message.back() == '\r')
-			message.erase(message.end() - 1);
+		// if (message.back() == '\r')
+		// 	message.erase(message.end());
 		std::string ret = _parsing(message, this->_pfds[i].fd);
 		if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
 			std::cerr << "send() error:" << strerror(errno) << std::endl;
@@ -73,7 +73,10 @@ Request Server::_splitRequest(std::string req)
 				return (request);
 			}
 			request._args.push_back(req.substr(i + 1, req.length() - i));
-			request._command = request._args[0];
+			std::string command = request._args[0];
+			if(!command.empty() && command.back() == '\n')
+				command.pop_back();
+			request._command = command;
 			request._args.erase(request._args.begin());
 			return (request);
 		}
@@ -81,7 +84,13 @@ Request Server::_splitRequest(std::string req)
 	}
 	if (i && req[j])
 		request._args.push_back(req.substr(j, i - j));
-	request._command = request._args[0];
+	std::string command = request._args[0];
+	// if(!command.empty() && command.back() == '\n')
+	// 	command.pop_back();
+	request._command = command;
 	request._args.erase(request._args.begin());
+	std::cout<<request._command<<std::endl;
+	for (size_t i = 0; i < request._args.size(); i++)
+		std::cout<<request._args[i]<<std::endl;
 	return (request);
 }
