@@ -19,14 +19,9 @@ void	Server::_ClientRequest(int i)
 	int nbytes = recv(sender_fd, buffer, sizeof(buffer) - 1, 0);
 	if (nbytes < 0)
 	{
-		if(errno == EWOULDBLOCK  || errno == EAGAIN)
-			return;
-		else
-		{
-			std::cerr << "recv() error:" << strerror(errno) << std::endl;
-			close(sender_fd);
-			_removeFromPoll(i);
-		}
+		std::cerr << "recv() error:" << strerror(errno) << std::endl;
+		close(sender_fd);
+		_removeFromPoll(i);
 	}
 	else if (nbytes == 0)
 	{
