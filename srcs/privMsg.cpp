@@ -18,13 +18,23 @@ std::string	Server::_privmsg(Request request, int i)
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	if (request._args.size() < 2)
 		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
-	if (request._args.size() == 2)
+	if (request._args.size() >= 2)
 	{
 		if (request._args[0].find(",") != std::string::npos)
-			return (_printMessage("401", this->_clients[i]->getNickname(), request._args[0].append(" :Too many recipients.")));
+			return (_printMessage("401", this->_clients[i]->getNickname(), request._args[0].append(" :Too many recipients0.")));
+		std::string msg;
+		for (size_t j = 1; j < request._args.size(); j++)
+		{
+			msg.append(request._args[j]);
+			if (j + 1 < request._args.size())
+				msg.append(" ");
+			if(j + 1 == request._args.size())
+				msg.pop_back();
+				
+		}
 		if (request._args[0][0] != '&' && request._args[0][0] != '#' && request._args[0][0] != '+' && request._args[0][0] != '!')
-			return (_privToUser(request._args[0], request._args[1], "PRIVMSG", i));
-		return (_privToChannel(request._args[0], request._args[1], i));
+			return (_privToUser(request._args[0], msg, "PRIVMSG", i));
+		return (_privToChannel(request._args[0], msg, i));
 	}
 	return ("");
 };
@@ -41,7 +51,7 @@ std::string 	Server::_privToUser(std::string User, std::string message, std::str
 	return ("");
 };
 
-std::string 	Server::_privToChannel(std::string ChannelName, std::string message, int i)
+std::string 	Server:: _privToChannel(std::string ChannelName, std::string message, int i)
 {
 	std::map<std::string, Channel *>::iterator it = this->_channels.find(ChannelName);
 	if (it != this->_channels.end())

@@ -81,9 +81,6 @@ Request Server::_splitRequest(std::string req)
 			request._args.push_back(req.substr(i + 1, req.length() - i));
 			request._command = request._args[0];
 			request._args.erase(request._args.begin());
-			// std::cout<<request._command<<std::endl;
-			// for (size_t i = 0; i < request._args.size(); i++)
-			// 	std::cout<<request._args[i]<<std::endl;
 			return (request);
 		}
 		i++;
@@ -96,10 +93,10 @@ Request Server::_splitRequest(std::string req)
 		request._args[0].pop_back();
 
 
-	// DEBUG
-	std::cout<<request._command<<std::endl;
-	for (size_t i = 0; i < request._args.size(); i++)
-		std::cout<<request._args[i]<<std::endl;
+	// // DEBUG
+	// std::cout<<request._command<<std::endl;
+	// for (size_t i = 0; i < request._args.size(); i++)
+	// 	std::cout<<request._args[i]<<std::endl;
 	
 	
 	return (request);
