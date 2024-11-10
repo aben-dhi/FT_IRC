@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:46:28 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 15:42:04 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 18:21:42 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #include "../includes/Channel.hpp"
 #include "../includes/File.hpp"
 #include "../includes/Client.hpp"
+#include <sstream>
 
 class Client;
 class Channel;
@@ -102,6 +103,7 @@ private:
 	std::string	_listAllChannels() const;
 	std::string	_sendFile(Request request, int i);
 	std::string	_getFile(Request request, int i);
+	std::vector<std::string> splitBuffer(std::string buffer);
 	
 public:
 	Server(std::string name, std::string password, int max_c, std::string port);

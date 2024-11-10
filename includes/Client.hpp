@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:49:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 16:57:14 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:21:58 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Client
 		struct Modes	_modes;
 		socklen_t	_remoteaddr_len;
 		std::map<std::string, Channel*>	_isChannel;
+		std::string _buffer;
 
 	public:
 		std::string	getNickname() const;
@@ -97,6 +98,9 @@ class Client
 		int	isJoined(std::string channel) const;
 		void	joinChannel(std::string ChannelName, Channel *channel);
 		std::string joinedChannels() const;
+		std::string get_buffer();
+		void set_buffer(std::string buffer);
+		void clear_buffer();
 };	
 
 #endif

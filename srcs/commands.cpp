@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 15:30:33 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:29:22 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,40 @@ std::string	Server::_parsing(std::string message, int i)
 	Request request(_splitRequest(message));
 	
 	if (request._isValid)
-		return ("Invalid request\n");
-	if (request._command == "PASS")
+		return ("Invalid request");
+	if(request._command == "CAP")
+		return ("");
+	if (request._command == "PASS" || request._command == "pass")
 		return (_setPassWord(request, i));
-	else if (request._command == "NICK")
+	else if (request._command == "NICK" || request._command == "nick")
 		return (_setNickName(request, i));
-	else if (request._command == "USER")
+	else if (request._command == "USER" || request._command == "user")
 		return (_setUserName(request, i));
-	else if (request._command == "OPER")
+	else if (request._command == "OPER" || request._command == "oper")
 		return (_setOper(request, i));
-	else if (request._command == "MODE")
+	else if (request._command == "MODE" || request._command == "mode")
 		return (_setMode(request, i));
-	else if (request._command == "PRIVMSG")
+	else if (request._command == "PRIVMSG" || request._command == "privmsg")
 		return (_privmsg(request, i));
-	else if (request._command == "NOTICE")
+	else if (request._command == "NOTICE" || request._command == "notice")
 		return (_notice(request, i));
-	else if (request._command == "HELP")
+	else if (request._command == "HELP" || request._command == "help")
 		return (_printHelpInfo());
-	else if (request._command == "JOIN")
+	else if (request._command == "JOIN" || request._command == "join")
 		return (_joinChannel(request, i));
-	else if (request._command == "TOPIC")
+	else if (request._command == "TOPIC" || request._command == "topic")
 		return (_topic(request, i));
-	else if (request._command == "KICK")
+	else if (request._command == "KICK" || request._command == "kick")
 		return (_kick(request, i));
-	else if (request._command == "PART")
+	else if (request._command == "PART" || request._command == "part")
 		return (_part(request, i));
-	else if (request._command == "QUIT")
+	else if (request._command == "QUIT" || request._command == "quit")
 		return (_quit(request, i));
-	else if (request._command == "SENDFILE")
+	else if (request._command == "SENDFILE" || request._command == "sendfile")
 		return (_sendFile(request, i));
-	else if (request._command == "GETFILE")
+	else if (request._command == "GETFILE" || request._command == "getfile")
 		return (_getFile(request, i));
-	else if (request._command == "ROBOSERV")
+	else if (request._command == "ROBOSERV" || request._command == "roboserv")
 		return (_RoboServ( request, i));
 	else
 		return ("Invalid command\n");

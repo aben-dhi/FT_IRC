@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:17:15 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/09/05 20:58:37 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/10 19:21:55 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,4 +168,7 @@ void	Client::joinChannel( std::string ChannelName, Channel *channel )
 		this->_isChannel.insert(std::pair<std::string, Channel *>(ChannelName, channel));
 };
 
+std::string Client::get_buffer() {return (this->_buffer);}
+void Client::set_buffer(std::string buffer) {this->_buffer += buffer;}
+void Client::clear_buffer() {this->_buffer.clear();}
 
