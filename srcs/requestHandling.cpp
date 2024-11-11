@@ -34,17 +34,19 @@ void	Server::_ClientRequest(int i)
 	memset(buffer, 0, 6000);
 	int sender_fd = this->_pfds[i].fd;
 	int nbytes = recv(sender_fd, buffer, sizeof(buffer) - 1, 0);
-	if (nbytes < 0)
-	{
-		std::cerr << "recv() error:" << strerror(errno) << std::endl;
-		_removeFromPoll(i);
-		close(sender_fd);
-	}
-	else if (nbytes == 0)
+	// if (nbytes < 0)
+	// {
+	// 	std::cerr << "recv() error:" << strerror(errno) << std::endl;
+	// 	_removeFromPoll(i);
+	// 	// close(sender_fd);
+	// 	return ;
+	// }
+	if (nbytes == 0)
 	{
 		std::cout << "[" << currentDateTime() << "]:" << "socket " << sender_fd << " hung up" << std::endl;
 		_removeFromPoll(i);
-		close(sender_fd);
+		// close(sender_fd);
+		return;
 	}
 	else
 	{

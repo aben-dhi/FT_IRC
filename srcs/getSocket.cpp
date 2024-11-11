@@ -35,8 +35,8 @@ void	Server::_getSocket(std::string port)
 		if (this->_socketfd == -1)
 			throw std::runtime_error("Failed to Create Socket");
 		setsockopt(this->_socketfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
-		if(fcntl(this->_socketfd, F_SETFL, O_NONBLOCK) == -1)
-			throw std::runtime_error("Failed to Set Socket fd to NONBLOCK");
+			if(fcntl(this->_socketfd, F_SETFL, O_NONBLOCK) == -1)
+				throw std::runtime_error("Failed to Set Socket fd to NONBLOCK");
 		if (bind(this->_socketfd, p->ai_addr, p->ai_addrlen) < 0)
 		{
 			close(this->_socketfd);
