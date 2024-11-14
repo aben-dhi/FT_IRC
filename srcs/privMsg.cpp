@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:43:39 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 14:48:41 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:50:54 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ std::string	Server::_privmsg(Request request, int i)
 			msg.append(request._args[j]);
 			if (j + 1 < request._args.size())
 				msg.append(" ");
-			if(j + 1 == request._args.size())
-				msg.pop_back();
+			// if(j + 1 == request._args.size())
+			// 	msg.pop_back();
 				
 		}
 		if (request._args[0][0] != '&' && request._args[0][0] != '#' && request._args[0][0] != '+' && request._args[0][0] != '!')

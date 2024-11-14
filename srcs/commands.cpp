@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/10 19:29:22 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/12 21:44:30 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ std::string	Server::_parsing(std::string message, int i)
 	Request request(_splitRequest(message));
 	
 	if (request._isValid)
-		return ("Invalid request");
+		return ("Invalid request\n");
 	if(request._command == "CAP")
 		return ("");
 	if (request._command == "PASS" || request._command == "pass")
@@ -242,7 +242,7 @@ std::string	Server::_quit(Request request, int i)
 		it++;
 	}
 	this->_clients[i]->leaveAllC();
-	close(this->_clients[i]->getClientfd());
+	// close(this->_clients[i]->getClientfd());
 	_removeFromPoll(i);
 	return ("QUIT");
 };
