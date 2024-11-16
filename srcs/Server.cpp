@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:45:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/08 17:50:54 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/16 23:56:45 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	Server::_newClient()
 	if (newfd == -1)
 	{
 		std::cerr << "accept: " << strerror(errno) << std::endl;
+		exit(-1);
 		return ;
 	}
 	if (fcntl(newfd, F_SETFL, O_NONBLOCK) == -1)

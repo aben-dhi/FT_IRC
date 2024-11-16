@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:17:15 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/10 19:21:55 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/16 23:13:00 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Client::Client() : _clientfd(0), _nickname(), _username(), _realname(), _hostnam
 
 Client::Client(int fd) : _clientfd(fd), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _modes(), _remoteaddr_len(0), _isChannel()
 {
+	
 }
 
 Client::Client(const Client &src) : _hostname(src._hostname)
