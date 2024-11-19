@@ -83,7 +83,7 @@ private:
 	std::string	_setPassWord(Request request, int i);
 	std::string	_setNickName(Request request, int i);
 	std::string	_setUserName(Request request, int i);
-	std::string	_quit(Request request, int i);
+	void	_quit(Request request, int i);
 	std::string	_printHelpInfo();
 	std::string	_joinChannel( Request request, int i );
 	int	_createChannel( std::string ChannelName, int CreatorFd );

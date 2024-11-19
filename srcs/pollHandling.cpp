@@ -27,8 +27,28 @@ void	Server::_addToPoll(int fd)
 
 void	Server::_removeFromPoll(int fd)
 {
-	close(this->_pfds[fd].fd);
-	this->_pfds[fd] = this->_pfds[this->_online_c - 1];
-	this->_clients.erase(this->_pfds[fd].fd);
-	this->_online_c--;
+    for(int i = 0; i < this->_online_c; i++)
+    {
+        if(fd == this->_pfds[i].fd)
+        {
+            close(this->_pfds[i].fd);
+            
+            Client* client = this->_clients[fd];
+            std::string nickname = client->getNickname();
+            delete client;
+            this->_clients.erase(fd);
+            
+            std::vector<std::string>::iterator it = std::find(this->_nicknames.begin(), this->_nicknames.end(), nickname);
+            if (it != this->_nicknames.end())
+            {
+                this->_nicknames.erase(it);
+            }
+            for(int j = i; j < this->_online_c - 1; j++)
+            {
+                this->_pfds[j] = this->_pfds[j + 1];
+            }
+            this->_online_c--;
+            break;
+        }
+    }
 }

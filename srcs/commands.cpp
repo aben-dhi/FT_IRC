@@ -45,7 +45,10 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request._command == "PART" || request._command == "part")
 		return (_part(request, i));
 	else if (request._command == "QUIT" || request._command == "quit")
-		return (_quit(request, i));
+	{
+		_quit(request, i);
+		return ("QUIT");
+	}
 	else if (request._command == "SENDFILE" || request._command == "sendfile")
 		return (_sendFile(request, i));
 	else if (request._command == "GETFILE" || request._command == "getfile")
@@ -227,7 +230,7 @@ std::string	Server::_setUserName(Request request, int i)
 	return ("");
 };
 
-std::string	Server::_quit(Request request, int i)
+void	Server::_quit(Request request, int i)
 {
 	std::string ret = this->_clients[i]->getUserprefix() + "QUIT ";
 	if (request._args.size())
@@ -244,7 +247,7 @@ std::string	Server::_quit(Request request, int i)
 	this->_clients[i]->leaveAllC();
 	// close(this->_clients[i]->getClientfd());
 	_removeFromPoll(i);
-	return ("QUIT");
+	// return ("QUIT");
 };
 
 std::string	Server::_printHelpInfo()

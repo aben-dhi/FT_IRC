@@ -63,7 +63,7 @@ void	Server::_newClient()
 	if (newfd == -1)
 	{
 		std::cerr << "accept: " << strerror(errno) << std::endl;
-		exit(-1);
+		// exit(-1);
 		return ;
 	}
 	if (fcntl(newfd, F_SETFL, O_NONBLOCK) == -1)

@@ -14,16 +14,16 @@
 
 std::string Server::_welcomeMsg()
 {
-	std::string welcome = RED;
+	std::string welcome;
 	welcome.append("██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗\n");
 	welcome.append("██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝\n");
 	welcome.append("██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗\n");
 	welcome.append("██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n");
 	welcome.append("╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n");
 	welcome.append(" ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n");
-	welcome.append(BLUE);
+	// welcome.append(BLUE);
 	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
-	welcome.append(RESET);
+	// welcome.append(RESET);
 	return (welcome);
 }
 
