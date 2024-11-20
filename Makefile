@@ -31,7 +31,7 @@ RED = \033[1;31m
 
 OBJS := $(SRCS:%.cpp=%.o)
 
-CPPFLAGS = -Wall -Wextra -Werror -g -fsanitize=address #-pthread #-std=c++98
+CPPFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address #-pthread #-std=c++98
 
 all: credit $(NAME)
 
