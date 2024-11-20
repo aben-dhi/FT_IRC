@@ -63,14 +63,20 @@ std::string	Server::_joinChannel( Request request, int i )
 int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 {
 	std::map<std::string, Channel *>::iterator it = this->_channels.find(ChannelName);
-	if (it == this->_channels.end())
-	{
-		if (ChannelName[0] != '&' && ChannelName[0] != '#' && ChannelName[0] != '+' && ChannelName[0] != '!')
-			return (BADCHANMASK);
-		Channel *channel = new Channel(ChannelName, this->_clients[CreatorFd]);
-		this->_channels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
-		this->_clients[CreatorFd]->joinChannel( ChannelName, channel );
-	}
+if (it == this->_channels.end())
+{
+    if (ChannelName[0] != '&' && ChannelName[0] != '#' && ChannelName[0] != '+' && ChannelName[0] != '!')
+        return (BADCHANMASK);
+    Channel *channel = new Channel(ChannelName, this->_clients[CreatorFd]);
+    this->_channels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
+    this->_clients[CreatorFd]->joinChannel(ChannelName, channel);
+    _sendAll(CreatorFd, this->_clients[CreatorFd]->getUserprefix() + "JOIN " + ChannelName + "\n");
+    _sendAll(CreatorFd, _printMessage("332", this->_clients[CreatorFd]->getNickname(), ChannelName + " :" + channel->getTopic()));
+    _sendAll(CreatorFd, _printMessage("353", this->_clients[CreatorFd]->getNickname() + " = " + ChannelName, channel->listAllUsers()));
+    _sendAll(CreatorFd, _printMessage("353", this->_clients[CreatorFd]->getNickname() + " " + ChannelName, ":End of NAMES list"));
+    std::string reply = "JOIN " + ChannelName + "\n";
+    _sendToEveryone(channel, reply, CreatorFd);
+}
 	else
 	{
 		if (it->second->getKey().empty())
