@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:49:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 06:00:23 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 06:08:17 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 # define CLIENT_HPP
 
 #include "Server.hpp"
-
-# define GREEN "\e[1;32m"
-# define RESET "\e[0m"
-# define RED "\e[1;91m"
-# define CYAN "\e[1;36m"
-# define YELLOW "\e[1;33m"
-# define PURPLE "\e[1;35m"
-# define BLUE "\e[1;34m"
 
 class Channel;
 

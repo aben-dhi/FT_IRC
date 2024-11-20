@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:50:20 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 06:03:30 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 06:09:11 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 std::string	Server::_getBotMessage()
 {
-	std::string Greeting = BLUE;
+	std::string Greeting;
 	Greeting.append("\n\n\n\n\n\n\n██████████████████████████████████████████████████████████████████████████████████\n");
 	Greeting.append("█                                                                                █\n");
 	Greeting.append("█\t ██████╗  ██████╗ ██████╗  ██████╗ ███████╗███████╗██████╗ ██╗   ██╗ \t █\n");
@@ -27,18 +27,17 @@ std::string	Server::_getBotMessage()
 	Greeting.append("█                                                                                █\n");
 	Greeting.append("██████████████████████████████████████████████████████████████████████████████████\n");
 
-	Greeting.append(BLUE "█                                                                                █\n");
-	Greeting.append(BLUE "█\t" RED " Usage: ROBOSERV [COMMAND_NUMBER] [MORE_OPTIONS]" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t How Can I Help You: (You can use The following list of commands)\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t " CYAN "[0]" RESET " : to List all Your stats" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t " CYAN "[1]" RESET " : to List all Your Joined Channels" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t " CYAN "[2]" RESET " : to see How many user online" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t " CYAN "[3]" RESET " : to List all Channels in Server" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t " CYAN "[4]" RESET " : to List stats of specific Channel" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█\t " CYAN "[5]" RESET " : to List Infos about the Server" BLUE "\r\t\t\t\t\t\t\t\t\t\t █\n");
-	Greeting.append(BLUE "█                                                                                █\n");
-	Greeting.append(BLUE "██████████████████████████████████████████████████████████████████████████████████\n\n\n\n");
-	Greeting.append(RESET);
+	Greeting.append( "█                                                                                █\n");
+	Greeting.append( "█\t"  " Usage: ROBOSERV [COMMAND_NUMBER] [MORE_OPTIONS]"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t How Can I Help You: (You can use The following list of commands)\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t "  "[0]"  " : to List all Your stats"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t "  "[1]"  " : to List all Your Joined Channels"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t "  "[2]"  " : to see How many user online"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t "  "[3]"  " : to List all Channels in Server"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t "  "[4]"  " : to List stats of specific Channel"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█\t "  "[5]"  " : to List Infos about the Server"  "\r\t\t\t\t\t\t\t\t\t\t █\n");
+	Greeting.append( "█                                                                                █\n");
+	Greeting.append( "██████████████████████████████████████████████████████████████████████████████████\n\n\n\n");
 	return (Greeting);
 };
 
@@ -105,31 +104,31 @@ std::string Server::_channelInfo(std::string ChannelName, int i)
 
 std::string	Server::_listAllChannels() const
 {
-	std::string channels(YELLOW "███████████████████████████████████████████████████████████████████████████████████████\n");
+	std::string channels( "███████████████████████████████████████████████████████████████████████████████████████\n");
 	channels.append("█              █              █                    █                                  █\n");
-	channels.append("█" RESET " Channel Name " YELLOW "█ " RESET "Online Users " YELLOW "█ " RESET "Creator Of Channel " YELLOW "█ " RESET "          Channel Topic          " YELLOW "█\n");
+	channels.append("█"  " Channel Name "  "█ "  "Online Users "  "█ "  "Creator Of Channel "  "█ "  "          Channel Topic          "  "█\n");
 	channels.append("█              █              █                    █                                  █\n");
 	channels.append("███████████████████████████████████████████████████████████████████████████████████████\n");
 	std::map<std::string, Channel *>::const_iterator it = this->_channels.begin();
 	while (it != this->_channels.end())
 	{
 		channels.append("█              █              █                    █                                  █\n");
-		channels.append("█ " RESET + fill(it->first, 12));
-		channels.append(YELLOW " █      " RESET + fill(std::string(to_cstr(it->second->getOnlineUsers())), 7));
-		channels.append(YELLOW " █ " RESET + fill(it->second->getCreator()->getRealname(), 18));
-		channels.append(YELLOW " █ " RESET + fill(it->second->getTopic(), 32));
-		channels.append(YELLOW " █\n");
-		channels.append(YELLOW "█              █              █                    █                                  █\n");
+		channels.append("█ "  + fill(it->first, 12));
+		channels.append( "█      "  + fill(std::string(to_cstr(it->second->getOnlineUsers())), 7));
+		channels.append( "█ "  + fill(it->second->getCreator()->getRealname(), 18));
+		channels.append( "█ "  + fill(it->second->getTopic(), 32));
+		channels.append( "█\n");
+		channels.append( "█              █              █                    █                                  █\n");
 		channels.append("███████████████████████████████████████████████████████████████████████████████████████\n");
 		it++;
 	};
 	if (this->_channels.size() == 0)
 	{
 		channels.append("█                                                                                     █\n");
-		channels.append("█                               " RESET "NO CHANNEL IN THE SERVER" YELLOW "                              █\n");
+		channels.append("█                               "  "NO CHANNEL IN THE SERVER"  "                              █\n");
 		channels.append("█                                                                                     █\n");
 		channels.append("███████████████████████████████████████████████████████████████████████████████████████\n");
 	}
-	channels.append(RESET "\n\n");
+	channels.append( "\n\n");
 	return (channels);
 };

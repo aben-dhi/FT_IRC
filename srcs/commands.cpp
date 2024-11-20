@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 06:02:40 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 06:06:33 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,17 +254,17 @@ std::string	Server::_printHelpInfo()
 {
 	std::string	helpInfo;
 
-	helpInfo.append(GREEN);
+	// helpInfo.append();
 	helpInfo.append("STEP 1: PASS\n");
-	helpInfo.append(RESET);
+	// helpInfo.append();
 	helpInfo.append("\tUse PASS command to set a password. e.g: PASS [Server Password]\n\n");
-	helpInfo.append(GREEN);
+	// helpInfo.append();
 	helpInfo.append("STEP 2: NICK\n");
-	helpInfo.append(RESET);
+	// helpInfo.append();
 	helpInfo.append("\tUse NICK command to set a nickname. e.g: NICK Robo\n\n");
-	helpInfo.append(GREEN);
+	// helpInfo.append();
 	helpInfo.append("STEP 3: USER\n");
-	helpInfo.append(RESET);
+	// helpInfo.append();
 	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER robo * * :robo serv\n\n");
 	return (helpInfo);
 };

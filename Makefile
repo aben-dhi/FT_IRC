@@ -26,8 +26,6 @@ HDRS = includes/Server.hpp \
 
 NAME = ircserv
 
-BLUE = \033[1;34m
-RED = \033[1;31m
 
 OBJS := $(SRCS:%.cpp=%.o)
 

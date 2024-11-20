@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:41:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 17:09:57 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 06:07:47 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ std::string Server::_welcomeMsg()
 	welcome.append("██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n");
 	welcome.append("╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n");
 	welcome.append(" ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n");
-	// welcome.append(BLUE);
+	// welcome.append();
 	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
-	// welcome.append(RESET);
+	// welcome.append();
 	return (welcome);
 }
 
