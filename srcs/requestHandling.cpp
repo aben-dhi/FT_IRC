@@ -38,7 +38,7 @@ void	Server::_ClientRequest(int i)
 	if (nbytes == 0)
 	{
 		std::cout << "[" << currentDateTime() << "]:" << "socket " << sender_fd << " hung up" << std::endl;
-		_removeFromPoll(i);
+		_removeFromPoll(sender_fd);
 		return;
 	}
 	else
@@ -55,10 +55,7 @@ void	Server::_ClientRequest(int i)
 				return ;
 			std::cout<<"["<<currentDateTime()<<"]:"<<ret<<std::endl;
 			if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
-			{
-				std::cout<< "loool"	<<std::endl;
 				std::cerr << "send() error:" << strerror(errno) << std::endl;
-			}
 		}
 	}
 	memset(buffer, 0, 6000);
@@ -112,13 +109,6 @@ Request Server::_splitRequest(std::string req)
 	request._args.erase(request._args.begin());
 	if(!request._args[0].empty() && request._args[0].back() == '\n')
 		request._args[0].pop_back();
-
-
-	// // DEBUG
-	// std::cout<<request._command<<std::endl;
-	// for (size_t i = 0; i < request._args.size(); i++)
-	// 	std::cout<<request._args[i]<<std::endl;
-	
 	
 	return (request);
 }

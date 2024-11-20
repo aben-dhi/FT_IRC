@@ -30,9 +30,16 @@ std::string	Server::_joinChannel( Request request, int i )
 	while (itChannels != parsChannels.end() && j == 1)
 	{
 		if ( itKeys != parsKeys.end())
+		{
 			j = _createPrvChannel(*itChannels, *itKeys, i);
+			std::cout<< "Creating private channel" <<  j << std::endl;
+		}
 		else
+		{
 			j = _createChannel(*itChannels, i);
+			std::cout<< "Creating channel" <<  j << std::endl;
+
+		}
 		if (j == BADCHANMASK)
 			return (_printMessage("476", this->_clients[i]->getNickname(), *itChannels + " :Bad Channel Mask"));
 		if (j == BANNEDFROMCHAN)
