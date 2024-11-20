@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:35:06 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 05:38:50 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 05:59:23 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void Server::_addToPoll(int fd) {
     {
         this->_max_c *= 2;
         struct pollfd* new_pfds = new struct pollfd[this->_max_c];
-        for (size_t i = 0; i < this->_online_c; ++i)
+        for (int i = 0; i < this->_online_c; ++i)
             new_pfds[i] = this->_pfds[i];
         delete[] this->_pfds;
         this->_pfds = new_pfds;

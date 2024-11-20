@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:49:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/10 19:21:58 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/20 06:00:23 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,6 @@ class Client
 		std::string get_buffer();
 		void set_buffer(std::string buffer);
 		void clear_buffer();
-};	
+};
 
 #endif

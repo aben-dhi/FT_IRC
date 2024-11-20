@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 05:35:21 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 06:02:40 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,13 @@ bool	Server::_validMode(Request request)
 
 std::string Server::_printUserModes(std::string ret, int i)
 {
-	ret.append("a: " + std::to_string(this->_clients[i]->getModes('a')));
-	ret.append("\ni: " + std::to_string(this->_clients[i]->getModes('i')));
-	ret.append("\nw: " + std::to_string(this->_clients[i]->getModes('w')));
-	ret.append("\nr: " + std::to_string(this->_clients[i]->getModes('r')));
-	ret.append("\no: " + std::to_string(this->_clients[i]->getModes('o')));
-	ret.append("\nO: " + std::to_string(this->_clients[i]->getModes('O')));
-	ret.append("\ns: " + std::to_string(this->_clients[i]->getModes('s')) + "\n");
+	ret.append("a: " + std::string(to_cstr(this->_clients[i]->getModes('a'))));
+	ret.append("\ni: " + std::string(to_cstr(this->_clients[i]->getModes('i'))));
+	ret.append("\nw: " + std::string(to_cstr(this->_clients[i]->getModes('w'))));
+	ret.append("\nr: " + std::string(to_cstr(this->_clients[i]->getModes('r'))));
+	ret.append("\no: " + std::string(to_cstr(this->_clients[i]->getModes('o'))));
+	ret.append("\nO: " + std::string(to_cstr(this->_clients[i]->getModes('O'))));
+	ret.append("\ns: " + std::string(to_cstr(this->_clients[i]->getModes('s')) + "\n"));
 	return ret;
 }
 

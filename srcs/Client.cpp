@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:17:15 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/16 23:13:00 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/20 06:00:14 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ std::string	Client::getUserInfo() const {
 	info.append("Real Name: " + this->_realname + "\n");
 	info.append("Nick Name: " + this->_nickname + "\n");
 	info.append("Host: " + this->_hostname+ "\n");
-	info.append("Joined Channels: " + std::to_string(this->_isChannel.size()) + "\n");
+	info.append("Joined Channels: " + std::string(to_cstr(this->_isChannel.size()) + "\n"));
 	info.append("\n");
 	return (info);
 }

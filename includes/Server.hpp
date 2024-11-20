@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:46:28 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/10 18:21:42 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/20 06:00:47 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@
 #include "../includes/File.hpp"
 #include "../includes/Client.hpp"
 #include <sstream>
+
+template<typename T>
+std::string to_cstr(T value)
+{
+    std::stringstream ret;
+    std::string miw;
+    ret << value;
+    miw = ret.str();
+    return miw;
+}
+
 
 class Client;
 class Channel;
