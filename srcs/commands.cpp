@@ -115,6 +115,7 @@ std::string Server::_topic(Request request, int i)
 
 bool	Server::_validMode(Request request)
 {
+	// we re rewriting this!!
 	char c = request._args[1][1];
 	if (request._args[1].length() != 2 || (request._args[1][0] != '-' && request._args[1][0] != '+') )
 		return (false);
@@ -123,17 +124,17 @@ bool	Server::_validMode(Request request)
 	return (true);
 }
 
-std::string Server::_printUserModes(std::string ret, int i)
-{
-	ret.append("a: " + std::string(to_cstr(this->_clients[i]->getModes('a'))));
-	ret.append("\ni: " + std::string(to_cstr(this->_clients[i]->getModes('i'))));
-	ret.append("\nw: " + std::string(to_cstr(this->_clients[i]->getModes('w'))));
-	ret.append("\nr: " + std::string(to_cstr(this->_clients[i]->getModes('r'))));
-	ret.append("\no: " + std::string(to_cstr(this->_clients[i]->getModes('o'))));
-	ret.append("\nO: " + std::string(to_cstr(this->_clients[i]->getModes('O'))));
-	ret.append("\ns: " + std::string(to_cstr(this->_clients[i]->getModes('s')) + "\n"));
-	return ret;
-}
+// std::string Server::_printUserModes(std::string ret, int i)
+// {
+// 	ret.append("a: " + std::string(to_cstr(this->_clients[i]->getModes('a'))));
+// 	ret.append("\ni: " + std::string(to_cstr(this->_clients[i]->getModes('i'))));
+// 	ret.append("\nw: " + std::string(to_cstr(this->_clients[i]->getModes('w'))));
+// 	ret.append("\nr: " + std::string(to_cstr(this->_clients[i]->getModes('r'))));
+// 	ret.append("\no: " + std::string(to_cstr(this->_clients[i]->getModes('o'))));
+// 	ret.append("\nO: " + std::string(to_cstr(this->_clients[i]->getModes('O'))));
+// 	ret.append("\ns: " + std::string(to_cstr(this->_clients[i]->getModes('s')) + "\n"));
+// 	return ret;
+// }
 
 std::string Server::_setMode(Request request, int i)
 {
@@ -142,8 +143,8 @@ std::string Server::_setMode(Request request, int i)
 	if (request._args.size() < 2)
 	{
 		std::string ret;
-		if (request._args.size() == 1 && request._args[0] == this->_clients[i]->getNickname())
-			return (_printUserModes(ret, i));
+		// if (request._args.size() == 1 && request._args[0] == this->_clients[i]->getNickname())
+		// 	return (_printUserModes(ret, i));
 		ret.append("461 " + this->_clients[i]->getNickname() + " :Not enough parameters\n");
 		return ret;
 	}
@@ -151,10 +152,10 @@ std::string Server::_setMode(Request request, int i)
 		return (_printMessage("502", this->_clients[i]->getNickname(), ":Can't change mode for other users"));
 	if (!_validMode(request))
 		return (_printMessage("501", this->_clients[i]->getNickname(), ":Invalid mode"));
-	if (request._args[1][0] == '+')
-		this->_clients[i]->setModes(true, request._args[1][1]);
-	else
-		this->_clients[i]->setModes(false, request._args[1][1]);
+	// if (request._args[1][0] == '+')
+	// 	this->_clients[i]->setModes(true, request._args[1][1]);
+	// else
+	// 	this->_clients[i]->setModes(false, request._args[1][1]);
 	return (_printMessage("221", this->_clients[i]->getNickname(), request._args[1]));
 }
 

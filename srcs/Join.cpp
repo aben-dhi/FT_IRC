@@ -15,7 +15,7 @@
 bool Client::isInChannel(const std::string& channelName) const
 {
     std::map<std::string, Channel*>::const_iterator it = this->_isChannel.find(channelName);
-    return it != this->_isChannel.end(); // Return true if the user is in the channel, false otherwise
+    return it != this->_isChannel.end();
 }
 
 std::string	Server::_joinChannel( Request request, int i )
@@ -24,7 +24,7 @@ std::string	Server::_joinChannel( Request request, int i )
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	 std::string ChannelName = request._args[0];
-    if (this->_clients[i]->isInChannel(ChannelName)) // Check if user is already in the channel
+    if (this->_clients[i]->isInChannel(ChannelName))
         return (_printMessage("443", this->_clients[i]->getNickname(), ChannelName + " :is already on channel"));
 	if (request._args.size() == 0)
 		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
@@ -88,7 +88,6 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 	}
 	else
 	{
-		// std::cout<< ChannelName << std::endl;
 		if (it->second->getKey().empty())
 		{
 			int i = 0;

@@ -17,17 +17,6 @@
 
 class Channel;
 
-struct Modes
-{
-	bool	away;
-	bool	invisible;
-	bool	wallops;
-	bool	rest;
-	bool	oper;
-	bool	local;
-	bool	server;
-};
-
 const std::string currentDateTime();
 std::string fill(std::string str, size_t len);
 
@@ -51,7 +40,6 @@ class Client
 		bool	_isop;
 		bool	_auth;
 		struct sockaddr_storage	_remoteaddr;
-		struct Modes	_modes;
 		socklen_t	_remoteaddr_len;
 		std::map<std::string, Channel*>	_isChannel;
 		std::string _buffer;
@@ -66,7 +54,6 @@ class Client
 		bool	getAuth() const;
 		int getRegistered() const;
 		int	getIsop() const;
-		int	getModes(char mode) const;
 		std::string	getUserprefix() const;
 		std::string	getUserInfo() const;
 		std::string	getChannels() const;
@@ -82,7 +69,6 @@ class Client
 		void	setAuth(bool auth);
 		void	setRegistered(int registered);
 		void	setIsop(bool isop);
-		void	setModes(int value, char mode);
 		void	setChannel(std::string channel, Channel *channel_ptr);
 		void	removeChannel(std::string channel);
 		std::string	leaveAllC();

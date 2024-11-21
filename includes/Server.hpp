@@ -88,7 +88,7 @@ private:
 	int _findByNickname(std::string nickname);
 	std::string _topic(Request request, int i);
 	bool	_validMode(Request request);
-	std::string _printUserModes(std::string ret, int i);
+	// std::string _printUserModes(std::string ret, int i);
 	std::string _setMode(Request request, int i);
 	std::string	_setOper(Request request, int i);
 	std::string	_setPassWord(Request request, int i);

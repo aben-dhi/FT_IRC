@@ -12,11 +12,11 @@
 
 #include "../includes/Client.hpp"
 
-Client::Client() : _clientfd(0), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _modes(), _remoteaddr_len(0), _isChannel()
+Client::Client() : _clientfd(0), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _remoteaddr_len(0), _isChannel()
 {
 }
 
-Client::Client(int fd) : _clientfd(fd), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _modes(), _remoteaddr_len(0), _isChannel()
+Client::Client(int fd) : _clientfd(fd), _nickname(), _username(), _realname(), _hostname("IRC"), _ID(), _registered(false),  _isop(false), _auth(false), _remoteaddr(), _remoteaddr_len(0), _isChannel()
 {
 	
 }
@@ -40,7 +40,6 @@ Client &Client::operator=(const Client &src)
 		this->_ID = src._ID;
 		this->_remoteaddr = src._remoteaddr;
 		this->_remoteaddr_len = src._remoteaddr_len;
-		this->_modes = src._modes;
 		this->_isChannel.insert(src._isChannel.begin(), src._isChannel.end());
 	}
 	return (*this);
@@ -58,24 +57,9 @@ void	Client::setRegistered(int registered) {this->_registered = registered;}
 void	Client::setAuth(bool auth) {this->_auth = auth;}
 void	Client::setIsop(bool isop) {
 	this->_isop = isop;
-	this->_modes.oper = isop;
-	this->_modes.local = isop;
 }
 void	Client::setClienfd(int clientfd) {this->_clientfd = clientfd;}
-void	Client::setModes(int value, char mode) {
-	if (mode == 'i')
-		this->_modes.invisible = value;
-	else if (mode == 'w')
-		this->_modes.wallops = value;
-	else if (mode == 'r')
-		this->_modes.rest = value;
-	else if (mode == 'o')
-		this->_modes.oper = value;
-	else if (mode == 'l')
-		this->_modes.local = value;
-	else if (mode == 's')
-		this->_modes.server = value;
-}
+
 void	Client::removeChannel(std::string channel) {this->_isChannel.erase(channel);}
 void	Client::setChannel(std::string channel, Channel *channel_ptr) {
 	if (!this->_isChannel.count(channel))
@@ -94,21 +78,7 @@ int	Client::getClientfd() const {return (this->_clientfd);}
 bool	Client::getAuth() const {return (this->_auth);}
 int	Client::getRegistered() const {return (this->_registered);}
 int	Client::getIsop() const {return (this->_isop);}
-int	Client::getModes(char mode) const {
-	if (mode == 'a')
-		return (this->_modes.invisible);
-	else if (mode == 'w')
-		return (this->_modes.wallops);
-	else if (mode == 'r')
-		return (this->_modes.rest);
-	else if (mode == 'o')
-		return (this->_modes.oper);
-	else if (mode == 'l')
-		return (this->_modes.local);
-	else if (mode == 's')
-		return (this->_modes.server);
-	return (0);
-}
+
 
 std::string	Client::getUserprefix() const {
 	return (":" + this->_nickname + "!" + this->_username + "@" + this->_hostname + " ");
