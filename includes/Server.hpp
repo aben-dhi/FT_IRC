@@ -121,6 +121,10 @@ public:
 	Server(const Server &src);
 	Server &operator=(const Server &src);
 	~Server();
+	Channel* getChannelByName(const std::string& name);
+    Client* getClientByNickname(const std::string& nickname);
+	std::string inviteRequest(Request request, int i);
+
 
 	void	_run();
 };

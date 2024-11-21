@@ -14,6 +14,7 @@
 # define CLIENT_HPP
 
 #include "Server.hpp"
+#include <set>
 
 class Channel;
 
@@ -43,6 +44,7 @@ class Client
 		socklen_t	_remoteaddr_len;
 		std::map<std::string, Channel*>	_isChannel;
 		std::string _buffer;
+		std::set<std::string> _invitedChannels;
 
 	public:
 		std::string	getNickname() const;
@@ -80,6 +82,8 @@ class Client
 		void set_buffer(std::string buffer);
 		void clear_buffer();
 		bool isInChannel(const std::string& channelName) const;
+		void setInvite(const std::string& channelName, bool inviteStatus);
+		bool isUserInvited(const std::string& channelName) const;
 };
 
 #endif

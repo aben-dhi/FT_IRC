@@ -34,6 +34,7 @@ Channel& Channel::operator=( const Channel& rhs )
 	this->_members.insert(rhs._members.begin(), rhs._members.end());
 	this->_operators.insert(rhs._operators.begin(), rhs._operators.end());
 	this->_voice.insert(rhs._voice.begin(), rhs._voice.end());
+	this->_modes = rhs._modes;
 	return (*this);
 };
 
@@ -74,7 +75,7 @@ int	Channel::addOperator( Client *member )
 	if (this->_operators.find(member->getClientfd()) == this->_operators.end())
 	{
 		this->_operators.insert(std::pair<int, Client *>(member->getClientfd(), member));
-		this->_onlineUsers++;
+		// this->_onlineUsers++;
 		return (USERISJOINED);
 	};
 	return (-1);
@@ -159,3 +160,53 @@ std::string		Channel::listAllUsers() const
 	}
 	return (AllUsers);
 };
+
+void Channel::setInviteOnly(bool inviteOnly)
+{
+    _modes.inviteOnly = inviteOnly;
+}
+
+void Channel::setTopicRestricted(bool topicRestricted)
+{
+    _modes.topicRestricted = topicRestricted;
+}
+
+void Channel::setModeKey(const std::string &key)
+{
+    _modes.key = key;
+}
+
+void Channel::setOperatorPrivilege(bool operatorPrivilege)
+{
+    _modes.operatorPrivilege = operatorPrivilege;
+}
+
+void Channel::setUserLimit(int userLimit)
+{
+    _modes.userLimit = userLimit;
+}
+
+bool Channel::isInviteOnly() const
+{
+    return _modes.inviteOnly;
+}
+
+bool Channel::isTopicRestricted() const
+{
+	return _modes.topicRestricted;
+}
+
+const std::string& Channel::getModeKey() const
+{
+	return _modes.key;
+}
+
+bool Channel::hasOperatorPrivilege() const
+{
+	return _modes.operatorPrivilege;
+}
+
+int Channel::getUserLimit() const
+{
+    return _modes.userLimit;
+}

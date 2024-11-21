@@ -112,3 +112,25 @@ std::string Server::_getPassword() const
 {
 	return (this->_password);
 }
+
+Channel* Server::getChannelByName(const std::string& name)
+{
+    std::map<std::string, Channel*>::iterator it = this->_channels.find(name);
+    if (it != this->_channels.end())
+    {
+        return it->second;
+    }
+    return nullptr;
+}
+
+Client* Server::getClientByNickname(const std::string& nickname)
+{
+    for (std::map<int, Client*>::iterator it = this->_clients.begin(); it != this->_clients.end(); ++it)
+    {
+        if (it->second->getNickname() == nickname)
+        {
+            return it->second;
+        }
+    }
+    return nullptr;
+}

@@ -55,6 +55,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_getFile(request, i));
 	else if (request._command == "ROBOSERV" || request._command == "roboserv")
 		return (_RoboServ( request, i));
+	else if (request._command == "INVITE" || request._command == "invite")
+		return (inviteRequest(request, i));
 	else
 		return ("Invalid command\n");
 }
@@ -138,26 +140,111 @@ bool	Server::_validMode(Request request)
 
 std::string Server::_setMode(Request request, int i)
 {
-	if (!this->_clients[i]->getRegistered())
-		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
-	if (request._args.size() < 2)
-	{
-		std::string ret;
-		// if (request._args.size() == 1 && request._args[0] == this->_clients[i]->getNickname())
-		// 	return (_printUserModes(ret, i));
-		ret.append("461 " + this->_clients[i]->getNickname() + " :Not enough parameters\n");
-		return ret;
-	}
-	if (request._args[0] != this->_clients[i]->getNickname())
-		return (_printMessage("502", this->_clients[i]->getNickname(), ":Can't change mode for other users"));
-	if (!_validMode(request))
-		return (_printMessage("501", this->_clients[i]->getNickname(), ":Invalid mode"));
-	// if (request._args[1][0] == '+')
-	// 	this->_clients[i]->setModes(true, request._args[1][1]);
-	// else
-	// 	this->_clients[i]->setModes(false, request._args[1][1]);
-	return (_printMessage("221", this->_clients[i]->getNickname(), request._args[1]));
+    if (!this->_clients[i]->getRegistered())
+        return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
+
+    if (request._args.size() < 2)
+    {
+        std::string ret;
+        ret.append("461 " + this->_clients[i]->getNickname() + " :Not enough parameters\n");
+        return ret;
+    }
+
+    std::string channelName = request._args[0];
+    std::string modeChanges = request._args[1];
+	std::cout<<modeChanges<<std::endl;
+    Channel *channel = getChannelByName(channelName);
+
+    if (!channel)
+        return (_printMessage("403", this->_clients[i]->getNickname(), channelName + " :No such channel"));
+	
+	std::pair<Client *, int> user = channel->findUserRole(i);
+    if (user.second != 1)
+        return (_printMessage("482", this->_clients[i]->getNickname(), channelName + " :You're not channel operator"));
+    Client *targetClient = getClientByNickname(request._args[2]);
+
+    bool addMode = true;
+    for (size_t j = 0; j < modeChanges.size(); ++j)
+    {
+        switch (modeChanges[j])
+        {
+            case '+':
+                addMode = true;
+                break;
+            case '-':
+                addMode = false;
+                break;
+            case 'i':
+                channel->setInviteOnly(addMode);
+                break;
+            case 't':
+                channel->setTopicRestricted(addMode);
+                break;
+            case 'k':
+                if (addMode)
+                {
+                    if (request._args.size() < 3)
+                        return (_printMessage("461", this->_clients[i]->getNickname(), ":Key not provided"));
+                    channel->setModeKey(request._args[2]);
+                }
+                else
+                {
+                    channel->setModeKey("");
+                }
+                break;
+            case 'o':
+                if (request._args.size() < 3)
+                    return (_printMessage("461", this->_clients[i]->getNickname(), ":Nickname not provided"));
+                if (!targetClient)
+                    return (_printMessage("401", this->_clients[i]->getNickname(), request._args[2] + " :No such nick"));
+                if (addMode)
+                    channel->addOperator(targetClient);
+                else
+                    channel->removeOperator(i);
+                break;
+            case 'l':
+                if (addMode)
+                {
+                    if (request._args.size() < 3)
+                        return (_printMessage("461", this->_clients[i]->getNickname(), ":Limit not provided"));
+                    int limit = std::stoi(request._args[2]);
+                    channel->setUserLimit(limit);
+                }
+                else
+                {
+                    channel->setUserLimit(-1);
+                }
+                break;
+            default:
+                return (_printMessage("472", this->_clients[i]->getNickname(), std::string(1, modeChanges[j]) + " :is unknown mode char to me"));
+        }
+    }
+
+    return (_printMessage("221", this->_clients[i]->getNickname(), modeChanges));
 }
+
+// std::string Server::_setMode(Request request, int i)
+// {
+// 	if (!this->_clients[i]->getRegistered())
+// 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
+// 	if (request._args.size() < 2)
+// 	{
+// 		std::string ret;
+// 		// if (request._args.size() == 1 && request._args[0] == this->_clients[i]->getNickname())
+// 		// 	return (_printUserModes(ret, i));
+// 		ret.append("461 " + this->_clients[i]->getNickname() + " :Not enough parameters\n");
+// 		return ret;
+// 	}
+// 	if (request._args[0] != this->_clients[i]->getNickname())
+// 		return (_printMessage("502", this->_clients[i]->getNickname(), ":Can't change mode for other users"));
+// 	if (!_validMode(request))
+// 		return (_printMessage("501", this->_clients[i]->getNickname(), ":Invalid mode"));
+// 	// if (request._args[1][0] == '+')
+// 	// 	this->_clients[i]->setModes(true, request._args[1][1]);
+// 	// else
+// 	// 	this->_clients[i]->setModes(false, request._args[1][1]);
+// 	return (_printMessage("221", this->_clients[i]->getNickname(), request._args[1]));
+// }
 
 std::string	Server::_setOper(Request request, int i)
 {
@@ -260,3 +347,27 @@ std::string	Server::_printHelpInfo()
 	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER robo * * :robo serv\n\n");
 	return (helpInfo);
 };
+
+std::string Server::inviteRequest(Request request, int i)
+{
+    Client *client = getClientByNickname(request._args[0]);
+    if (!client)
+        return (_printMessage("401", this->_clients[i]->getNickname(), request._args[0] + " :No such nick"));
+    Channel *channel = getChannelByName(request._args[1]);
+    if (!channel)
+        return (_printMessage("403", this->_clients[i]->getNickname(), request._args[1] + " :No such channel"));
+    std::pair<Client *, int> user = channel->findUserRole(i);
+    if (user.second != 1)
+        return (_printMessage("482", this->_clients[i]->getNickname(), request._args[1] + " :You're not channel operator"));
+    if (!channel->isInviteOnly())
+        return (_printMessage("518", this->_clients[i]->getNickname(), request._args[1] + " :Channel is not invite only"));
+    if (client->isInChannel(channel->getName()))
+        return (_printMessage("443", this->_clients[i]->getNickname(), request._args[1] + " :You're already in that channel"));
+    std::map<std::string, Client *> listofbanned = channel->getBanned();
+    if (listofbanned.find(client->getNickname()) != listofbanned.end())
+        return (_printMessage("465", this->_clients[i]->getNickname(), request._args[1] + " :You're banned from that channel"));
+    if (client->isUserInvited(channel->getName()))
+        return (_printMessage("443", this->_clients[i]->getNickname(), request._args[1] + " :You're already invited to that channel"));
+    client->setInvite(channel->getName(), true);
+    return (_printMessage("341", this->_clients[i]->getNickname(), request._args[0] + " " + request._args[1]));
+}

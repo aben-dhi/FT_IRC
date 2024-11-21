@@ -143,3 +143,16 @@ std::string Client::get_buffer() {return (this->_buffer);}
 void Client::set_buffer(std::string buffer) {this->_buffer += buffer;}
 void Client::clear_buffer() {this->_buffer.clear();}
 
+void Client::setInvite(const std::string& channelName, bool inviteStatus)
+{
+	if (inviteStatus) {
+		_invitedChannels.insert(channelName);
+	} else {
+		_invitedChannels.erase(channelName);
+	}
+}
+
+bool Client::isUserInvited(const std::string& channelName) const
+{
+	return _invitedChannels.find(channelName) != _invitedChannels.end();
+}

@@ -24,13 +24,19 @@ std::string	Server::_joinChannel( Request request, int i )
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	 std::string ChannelName = request._args[0];
-    if (this->_clients[i]->isInChannel(ChannelName))
+	if (this->_clients[i]->isInChannel(ChannelName))
         return (_printMessage("443", this->_clients[i]->getNickname(), ChannelName + " :is already on channel"));
 	if (request._args.size() == 0)
 		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
 	
 	if (request._args[0] == "0")
 		return(this->_clients[i]->leaveAllC());
+    Channel *channel = getChannelByName(ChannelName);
+	if(channel)
+	{
+		if (channel->isInviteOnly() && !this->_clients[i]->isUserInvited(channel->getName()))
+			return (_printMessage("473", this->_clients[i]->getNickname(), ChannelName + " :Cannot join channel (+i)"));
+	}
 	std::vector<std::string> parsChannels(_commaSeparator(request._args[0]));
 	std::vector<std::string> parsKeys;
 	if (request._args.size() == 2)
@@ -93,14 +99,14 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 			int i = 0;
 			if (this->_clients[CreatorFd]->getIsop() == true)
 				i = it->second->addOperator(this->_clients[CreatorFd]);
+			else
+				i = it->second->addMember(this->_clients[CreatorFd]);
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
 				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
 				return (BANNEDFROMCHAN);
-			else
-				i = it->second->addMember(this->_clients[CreatorFd]);
 			_sendAll(CreatorFd, this->_clients[CreatorFd]->getUserprefix() + "JOIN " + ChannelName + "\n");
 			_sendAll(CreatorFd, _printMessage("332", this->_clients[CreatorFd]->getNickname(), ChannelName + " :" + it->second->getTopic()));
 			_sendAll(CreatorFd, _printMessage("353", this->_clients[CreatorFd]->getNickname() + " = " + ChannelName, it->second->listAllUsers()));
