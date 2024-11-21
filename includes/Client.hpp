@@ -93,6 +93,7 @@ class Client
 		std::string get_buffer();
 		void set_buffer(std::string buffer);
 		void clear_buffer();
+		bool isInChannel(const std::string& channelName) const;
 };
 
 #endif

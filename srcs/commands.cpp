@@ -245,26 +245,17 @@ void	Server::_quit(Request request, int i)
 		it++;
 	}
 	this->_clients[i]->leaveAllC();
-	// close(this->_clients[i]->getClientfd());
 	_removeFromPoll(i);
-	// return ("QUIT");
 };
 
 std::string	Server::_printHelpInfo()
 {
 	std::string	helpInfo;
-
-	// helpInfo.append();
 	helpInfo.append("STEP 1: PASS\n");
-	// helpInfo.append();
 	helpInfo.append("\tUse PASS command to set a password. e.g: PASS [Server Password]\n\n");
-	// helpInfo.append();
 	helpInfo.append("STEP 2: NICK\n");
-	// helpInfo.append();
 	helpInfo.append("\tUse NICK command to set a nickname. e.g: NICK Robo\n\n");
-	// helpInfo.append();
 	helpInfo.append("STEP 3: USER\n");
-	// helpInfo.append();
 	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER robo * * :robo serv\n\n");
 	return (helpInfo);
 };

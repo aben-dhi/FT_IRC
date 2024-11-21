@@ -37,7 +37,7 @@ void	Server::_ClientRequest(int i)
 
 	if (nbytes == 0)
 	{
-		std::cout << "[" << currentDateTime() << "]:" << "socket " << sender_fd << " hung up" << std::endl;
+		std::cerr << "[" << currentDateTime() << "]:" << "socket " << sender_fd << " hung up" << std::endl;
 		_removeFromPoll(sender_fd);
 		return;
 	}

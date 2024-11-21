@@ -12,19 +12,6 @@
 
 #include "../includes/Server.hpp"
 
-// void	Server::_addToPoll(int fd)
-// {
-// 	if (this->_online_c == this->_max_c)
-// 	{
-// 		this->_max_c *= 2;
-// 		this->_pfds = (struct pollfd *)realloc(this->_pfds, this->_max_c);
-// 	}
-// 	this->_pfds[this->_online_c].fd = fd;
-// 	this->_pfds[this->_online_c].events = POLLIN;
-// 	this->_clients.insert(std::pair<int, Client*>(fd, new Client(fd)));
-// 	this->_online_c++;
-// }
-
 void Server::_addToPoll(int fd) {
     if (this->_online_c == this->_max_c)
     {

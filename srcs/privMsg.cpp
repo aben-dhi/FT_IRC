@@ -28,9 +28,6 @@ std::string	Server::_privmsg(Request request, int i)
 			msg.append(request._args[j]);
 			if (j + 1 < request._args.size())
 				msg.append(" ");
-			// if(j + 1 == request._args.size())
-			// 	msg.pop_back();
-				
 		}
 		if (request._args[0][0] != '&' && request._args[0][0] != '#' && request._args[0][0] != '+' && request._args[0][0] != '!')
 			return (_privToUser(request._args[0], msg, "PRIVMSG", i));

@@ -21,9 +21,7 @@ std::string Server::_welcomeMsg()
 	welcome.append("██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n");
 	welcome.append("╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n");
 	welcome.append(" ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n");
-	// welcome.append();
 	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
-	// welcome.append();
 	return (welcome);
 }
 
