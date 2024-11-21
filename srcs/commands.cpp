@@ -115,16 +115,16 @@ std::string Server::_topic(Request request, int i)
 	return ("");
 }
 
-bool	Server::_validMode(Request request)
-{
-	// we re rewriting this!!
-	char c = request._args[1][1];
-	if (request._args[1].length() != 2 || (request._args[1][0] != '-' && request._args[1][0] != '+') )
-		return (false);
-	if (c != 'a' && c != 'i' && c != 'w' && c != 'r' && c != 'o' && c != 'O' && c != 's')
-		return (false);
-	return (true);
-}
+// bool	Server::_validMode(Request request)
+// {
+// 	// we re rewriting this!!
+// 	char c = request._args[1][1];
+// 	if (request._args[1].length() != 2 || (request._args[1][0] != '-' && request._args[1][0] != '+') )
+// 		return (false);
+// 	if (c != 'a' && c != 'i' && c != 'w' && c != 'r' && c != 'o' && c != 'O' && c != 's')
+// 		return (false);
+// 	return (true);
+// }
 
 // std::string Server::_printUserModes(std::string ret, int i)
 // {

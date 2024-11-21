@@ -103,7 +103,6 @@ class Channel
         const std::string& getModeKey() const;
         bool hasOperatorPrivilege() const;
         int getUserLimit() const;
-		// const std::map<std::string, Client *> &getBanned() const { return _bannedClients;}
 };
 
 #endif
