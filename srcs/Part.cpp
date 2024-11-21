@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:38:16 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 14:42:55 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:10:41 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int	Server::_partChannel( std::string ChannelName, int i, std::string message, i
 				itCh->second->removeMember(i);
 			else if (user.second == 1)
 				itCh->second->removeOperator(i);
-			else
-				itCh->second->removeVoice(i);
 			user.first->removeChannel(itCh->second->getName());
 			if (isPart == 1)
 			{

@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 06:06:33 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:00:59 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,5 +369,7 @@ std::string Server::inviteRequest(Request request, int i)
     if (client->isUserInvited(channel->getName()))
         return (_printMessage("443", this->_clients[i]->getNickname(), request._args[1] + " :You're already invited to that channel"));
     client->setInvite(channel->getName(), true);
+	std::string inviteMessage = channel->getName();
+	_privToUser(client->getNickname(), inviteMessage, "INVITE", i);
     return (_printMessage("341", this->_clients[i]->getNickname(), request._args[0] + " " + request._args[1]));
 }

@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:10:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 15:53:07 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:09:26 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ class Channel
 		int	addOperator(Client *member);
 		int	banUser(Client *member);
 		void	removeOperator(int i);
-		void	removeVoice(int i);
 		void	removeBanned(std::string nickName);
 		void	removeMember(int i);
 
@@ -99,6 +98,7 @@ class Channel
         void setOperatorPrivilege(bool operatorPrivilege);
         void setUserLimit(int userLimit);
         bool isInviteOnly() const;
+		bool isModeKey() const;
         bool isTopicRestricted() const;
         const std::string& getModeKey() const;
         bool hasOperatorPrivilege() const;

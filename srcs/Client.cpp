@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:17:15 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 06:00:14 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:09:50 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ std::string Client::leaveAllC()
 			it->second->removeMember(this->_clientfd);
 		else if (user.second == 1)
 			it->second->removeOperator(this->_clientfd);
-		else
-			it->second->removeVoice(this->_clientfd);
 		user.first->removeChannel(it->second->getName());
 		it = this->_isChannel.begin();
 	}

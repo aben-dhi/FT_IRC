@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:03:02 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/09 13:06:23 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:12:55 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ Channel& Channel::operator=( const Channel& rhs )
 char							const &Channel::getPrefix()			const { return this->_prefix; };
 int								const &Channel::getOnlineUsers()	const { return this->_onlineUsers; };
 std::string						const &Channel::getName() 			const { return this->_name; };
-std::string						const &Channel::getKey()			const { return this->_key; };
+std::string const &Channel::getKey() const {
+	if (!this->_modes.key.empty())
+		return this->_modes.key;
+	return this->_key;
+};
 std::string						const &Channel::getTopic()			const { return this->_topic; };
 std::map<int, Client *>			const &Channel::getMembers()		const { return this->_members; };
 std::map<int, Client *>			const &Channel::getOperators()		const { return this->_operators; };
@@ -52,7 +56,7 @@ Client*		Channel::getCreator() const { return (this->_creator); };
 void	Channel::setPrefix(char prefix)			{ this->_prefix = prefix; };
 void	Channel::setOnlineUsers(int online)		{ this->_onlineUsers = online; };
 void	Channel::setName(std::string name)		{ this->_name = name; };
-void	Channel::setKey(std::string key)		{ this->_key = key; };
+void	Channel::setKey(std::string key)		{ this->_key = key;};
 void	Channel::setTopic(std::string topic)	{ this->_topic = topic; };
 
 int	Channel::addMember( Client *member )
@@ -95,11 +99,6 @@ void	Channel::removeOperator( int i)
 	this->_onlineUsers--;
 };
 
-void	Channel::removeVoice( int i)
-{
-	this->_voice.erase(i);
-	this->_onlineUsers--;
-};
 
 void	Channel::removeBanned( std::string nicgetNickname )
 {
@@ -209,4 +208,9 @@ bool Channel::hasOperatorPrivilege() const
 int Channel::getUserLimit() const
 {
     return _modes.userLimit;
+}
+
+bool Channel::isModeKey() const
+{
+	return !_modes.key.empty();
 }
