@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 06:55:39 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 23:19:39 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ std::string Server::_notice(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	if (request._args.size() < 2)
-		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickname(), " NOTICE :Not enough parameters"));
 	if (request._args.size() == 2)
 		_privToUser(request._args[0], request._args[1], "NOTICE", i);
 	return ("");
@@ -89,7 +89,7 @@ std::string Server::_topic(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	if (request._args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickname(), " TOPIC :Not enough parameters"));
 	if (request._args.size() == 1)
 	{
 		if (this->_channels.find(request._args[0])->second->getTopic().empty())
@@ -201,12 +201,14 @@ std::string Server::_setMode(Request request, int i)
 				{
                     channel->addOperator(targetClient);
 					_sendToEveryone(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
+					_sendToSender(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
 					return(_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is now a channel operator"));
 				}
                 else
 				{
                     channel->removeOperator(i);
 					_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
+					_sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
 					return (_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is no longer a channel operator"));
 				}
                 break;

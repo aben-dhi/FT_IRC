@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:19:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/16 23:57:09 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 22:08:18 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	Server::_ClientRequest(int i)
 	memset(buffer, 0, 6000);
 	int sender_fd = this->_pfds[i].fd;
 	int nbytes = recv(sender_fd, buffer, sizeof(buffer) - 1, 0);
-
 	if (nbytes == 0)
 	{
 		std::cerr << "[" << currentDateTime() << "]:" << "socket " << sender_fd << " hung up" << std::endl;

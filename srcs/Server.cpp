@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:45:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/16 23:56:45 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 23:22:32 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,4 +133,25 @@ Client* Server::getClientByNickname(const std::string& nickname)
         }
     }
     return nullptr;
+}
+
+std::string    Server::_sendToSender(Channel *Channel, std::string message, int fd)
+{
+    std::map<int, Client*> allUsers = Channel->getAllUsers();
+    std::map<int, Client*>::iterator it = allUsers.begin();
+    std::string msg = this->_clients[fd]->getUserprefix();
+    msg.append(message);
+    while (it != allUsers.end())
+    {
+        if (it->first == fd)
+		{
+            if(_sendAll(it->first, msg) == -1)
+            {
+                std::cerr << "send: " << strerror(errno) << std::endl;
+                return("");
+            }
+		}
+        it++;
+    }
+    return("");
 }

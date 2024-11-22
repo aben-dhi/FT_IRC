@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 23:39:29 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/08/17 17:05:22 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:10:49 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ std::string	Server::_kick(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	if (request._args.size() < 2)
-		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickname(), " KICK :Not enough parameters"));
 	std::vector<std::string> channels(_commaSeparator(request._args[0]));
 	std::vector<std::string> users(_commaSeparator(request._args[1]));
 	std::vector<std::string>::iterator it = channels.begin();

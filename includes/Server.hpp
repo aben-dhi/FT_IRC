@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:46:28 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/20 06:00:47 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 23:15:23 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ public:
 	Channel* getChannelByName(const std::string& name);
     Client* getClientByNickname(const std::string& nickname);
 	std::string inviteRequest(Request request, int i);
+	std::string    _sendToSender(Channel *Channel, std::string message, int fd);
 
 
 	void	_run();

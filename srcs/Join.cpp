@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 23:37:18 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 05:34:26 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:10:40 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ std::string	Server::_joinChannel( Request request, int i )
 	if (this->_clients[i]->isInChannel(ChannelName))
         return (_printMessage("443", this->_clients[i]->getNickname(), ChannelName + " :is already on channel"));
 	if (request._args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickname(), ":Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickname(), " JOIN :Not enough parameters"));
 	
 	if (request._args[0] == "0")
 		return(this->_clients[i]->leaveAllC());
