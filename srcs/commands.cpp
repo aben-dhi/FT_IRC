@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 05:12:11 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 06:11:25 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ std::string Server::_setMode(Request request, int i)
         return (_printMessage("403", this->_clients[i]->getNickname(), channelName + " :No such channel"));
 	
 	std::pair<Client *, int> user = channel->findUserRole(i);
-    if (user.second != 1)
+    if (user.second != 1 )
         return (_printMessage("482", this->_clients[i]->getNickname(), channelName + " :You're not channel operator"));
     Client *targetClient = getClientByNickname(request._args[2]);
 
@@ -198,7 +198,11 @@ std::string Server::_setMode(Request request, int i)
                 if (!targetClient)
                     return (_printMessage("401", this->_clients[i]->getNickname(), request._args[2] + " :No such nick"));
                 if (addMode)
+				{
                     channel->addOperator(targetClient);
+					_sendToEveryone(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
+					return(_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is now a channel operator"));
+				}
                 else
                     channel->removeOperator(i);
                 break;

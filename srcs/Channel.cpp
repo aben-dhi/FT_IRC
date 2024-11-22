@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:03:02 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/21 18:12:55 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 06:04:33 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,15 +124,12 @@ std::map<int, Client *>	Channel::getAllUsers() const
 
 std::pair<Client *, int> Channel::findUserRole( int i )
 {
-	std::map<int, Client *>::iterator it = this->_members.find(i);
-	if (it != this->_members.end())
-		return (std::pair<Client *, int>(it->second, 0));
-	it = this->_operators.find(i);
+	std::map<int, Client *>::iterator it = this->_operators.find(i);
 	if (it != this->_operators.end())
 		return (std::pair<Client *, int>(it->second, 1));
-	it = this->_voice.find(i);
-	if (it != this->_voice.end())
-		return (std::pair<Client *, int>(it->second, 2));
+	it = this->_members.find(i);
+	if (it != this->_members.end())
+		return (std::pair<Client *, int>(it->second, 0));
 	return (std::pair<Client *, int>(NULL, -1));
 };
 
