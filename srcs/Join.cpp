@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: starscourge <starscourge@student.42.fr>    +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 23:37:18 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/21 16:53:51 by starscourge      ###   ########.fr       */
+/*   Updated: 2024/11/22 05:34:26 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ std::string	Server::_joinChannel( Request request, int i )
 			return (_printMessage("475", this->_clients[i]->getNickname(), ChannelName + " :Cannot join channel (+k)"));
 		else if (channel->isModeKey() && request._args.size() == 2 && request._args[1] != channel->getModeKey())
 			return (_printMessage("475", this->_clients[i]->getNickname(), ChannelName + " :Cannot join channel (+k)"));
+		if (channel->getUserLimit() != -1 && channel->getOnlineUsers() >= channel->getUserLimit())
+			return (_printMessage("471", this->_clients[i]->getNickname(), channel->getName() + " :Cannot join channel (channel is full)"));
 	}
 	std::vector<std::string> parsChannels(_commaSeparator(request._args[0]));
 	std::vector<std::string> parsKeys;

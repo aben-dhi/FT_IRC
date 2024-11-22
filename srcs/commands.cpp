@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/21 18:00:59 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 05:12:11 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ std::string Server::_topic(Request request, int i)
 	if (it != this->_channels.end())
 	{
 		std::pair<Client *, int> user = it->second->findUserRole(i);
-		if (user.second == 1)
+		if (user.second == 1 || (it->second->isTopicRestricted() == false))
 		{
 			it->second->setTopic(request._args[1]);
 			std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";

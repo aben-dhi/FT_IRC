@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:10:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/21 18:09:26 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 05:03:55 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ struct Modes
     bool operatorPrivilege;
     int userLimit;
 
-    Modes() : inviteOnly(false), topicRestricted(false), key(""), operatorPrivilege(false), userLimit(-1) {}
+    Modes() : inviteOnly(false), topicRestricted(true), key(""), operatorPrivilege(false), userLimit(-1) {}
 };
 
 
