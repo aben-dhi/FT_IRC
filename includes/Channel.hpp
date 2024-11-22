@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:10:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 05:03:55 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 07:01:26 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ class Channel
 		std::string	_topic;
 		std::map<int, Client *>	_members;
 		std::map<int, Client *>	_operators;
-		std::map<int, Client *>	_voice;
 		std::vector<std::string>	_banned;
 		struct Modes _modes;
 		Channel();
@@ -71,7 +70,6 @@ class Channel
 		std::string						const &getTopic()		const;
 		std::map<int, Client *>			const &getMembers()		const;
 		std::map<int, Client *>			const &getOperators()	const;
-		std::map<int, Client *>			const &getVoice()		const;
 		std::map<std::string, Client *>	const &getBanned()		const { return _bannedClients; }
 
 		Client*						getCreator() const;

@@ -4,7 +4,6 @@ SRCS =	main.cpp \
 		srcs/Channel.cpp \
 		srcs/Request.cpp \
 		srcs/File.cpp \
-		srcs/Client1.cpp \
 		srcs/Join.cpp\
 		srcs/Kick.cpp\
 		srcs/Part.cpp\

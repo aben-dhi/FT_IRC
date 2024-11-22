@@ -6,19 +6,19 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:03:02 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 06:54:08 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 07:02:06 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Channel.hpp"
 
-Channel::Channel() : _prefix(), _creator(), _onlineUsers(), _name(), _key(), _topic(), _members(), _operators(), _voice(), _banned() {};
+Channel::Channel() : _prefix(), _creator(), _onlineUsers(), _name(), _key(), _topic(), _members(), _operators(),_banned() {};
 Channel::Channel( const Channel& x ) { *this = x; };
-Channel::Channel(std::string channelName, Client *Creator) : _prefix(), _creator(Creator), _onlineUsers(1), _name(channelName), _key(), _topic(), _members(), _operators(), _voice(), _banned()
+Channel::Channel(std::string channelName, Client *Creator) : _prefix(), _creator(Creator), _onlineUsers(1), _name(channelName), _key(), _topic(), _members(), _operators(), _banned()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
 };
-Channel::Channel(std::string channelName, std::string channelKey, Client *Creator) : _prefix(), _creator(Creator), _onlineUsers(1), _name(channelName), _key(channelKey), _topic(), _members(), _operators(), _voice(), _banned()
+Channel::Channel(std::string channelName, std::string channelKey, Client *Creator) : _prefix(), _creator(Creator), _onlineUsers(1), _name(channelName), _key(channelKey), _topic(), _members(), _operators(), _banned()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
 };
@@ -33,7 +33,6 @@ Channel& Channel::operator=( const Channel& rhs )
 	this->_name = rhs._name;
 	this->_members.insert(rhs._members.begin(), rhs._members.end());
 	this->_operators.insert(rhs._operators.begin(), rhs._operators.end());
-	this->_voice.insert(rhs._voice.begin(), rhs._voice.end());
 	this->_modes = rhs._modes;
 	return (*this);
 };
@@ -49,7 +48,6 @@ std::string const &Channel::getKey() const {
 std::string						const &Channel::getTopic()			const { return this->_topic; };
 std::map<int, Client *>			const &Channel::getMembers()		const { return this->_members; };
 std::map<int, Client *>			const &Channel::getOperators()		const { return this->_operators; };
-std::map<int, Client *>			const &Channel::getVoice()			const { return this->_voice; };
 
 Client*		Channel::getCreator() const { return (this->_creator); };
 
@@ -118,7 +116,6 @@ std::map<int, Client *>	Channel::getAllUsers() const
 {
 	std::map<int, Client *>	allUsers(this->_members.begin(), this->_members.end());
 	allUsers.insert(this->_operators.begin(), this->_operators.end());
-	allUsers.insert(this->_voice.begin(), this->_voice.end());
 	return (allUsers);
 };
 
@@ -146,12 +143,6 @@ std::string		Channel::listAllUsers() const
 	while (it != this->_members.end())
 	{
 		AllUsers.append(it->second->getNickname() + " ");
-		it++;
-	}
-	it = this->_voice.begin();
-	while (it != this->_voice.end())
-	{
-		AllUsers.append("+" + it->second->getNickname() + " ");
 		it++;
 	}
 	return (AllUsers);
