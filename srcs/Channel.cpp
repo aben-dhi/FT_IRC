@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:03:02 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 06:04:33 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 06:54:08 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	Channel::banUser( Client *member )
 void	Channel::removeOperator( int i)
 {
 	this->_operators.erase(i);
-	this->_onlineUsers--;
+	// this->_onlineUsers--;
 };
 
 

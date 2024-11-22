@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 06:11:25 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/22 06:55:39 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,11 @@ std::string Server::_setMode(Request request, int i)
 					return(_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is now a channel operator"));
 				}
                 else
+				{
                     channel->removeOperator(i);
+					_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
+					return (_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is no longer a channel operator"));
+				}
                 break;
             case 'l':
                 if (addMode)
