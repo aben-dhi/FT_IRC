@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transferFile.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 15:32:08 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 18:14:56 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 10:44:28 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ std::string	Server::_sendFile(Request request, int i)
 		return (_printMessage("461", this->_clients[i]->getNickname(), " SENDFILE :Not enough parameters"));
 	if (_findByNickname(request._args[0]) == USERNOTFOUND)
 		return (_printMessage("401", this->_clients[i]->getNickname(), request._args[0] + " :No such nick/channel"));
-	std::fstream ifs(request._args[1], std::fstream::in);
+	std::fstream ifs(request._args[1].c_str(), std::fstream::in);
 	if (ifs.fail())
 		return (_printMessage("998", this->_clients[i]->getNickname(), ":Invalid file path"));
 	size_t	pos = request._args[1].find_last_of('/');
@@ -44,8 +44,8 @@ std::string	Server::_getFile(Request request, int i)
 	File file(this->_files.find(request._args[0])->second);
 	if (file.receiver != this->_clients[i]->getNickname())
 		return (_printMessage("994", this->_clients[i]->getNickname(), ":Permission Denied"));
-	std::fstream	ofs(request._args[1] + "/" + request._args[0], std::fstream::out);
-	std::fstream	ifs(file.path, std::fstream::in);
+    std::fstream	ofs((request._args[1] + "/" + request._args[0]).c_str(), std::fstream::out);
+	std::fstream	ifs(file.path.c_str(), std::fstream::in);
 	if (ofs.is_open())
 		ofs << ifs.rdbuf();
 	this->_files.erase(file.name);

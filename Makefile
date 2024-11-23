@@ -28,7 +28,7 @@ NAME = ircserv
 
 OBJS := $(SRCS:%.cpp=%.o)
 
-CPPFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address #-pthread #-std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98 #-g -fsanitize=address #-pthread 
 
 all: credit $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 09:31:08 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/23 10:38:51 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ std::string Server::_setMode(Request request, int i)
 					{
 						if (request._args.size() < 3)
 							return (_printMessage("461", this->_clients[i]->getNickname(), ":Limit not provided"));
-						int limit = std::stoi(request._args[2]);
+						int limit = std::atoi(request._args[2].c_str());
 						channel->setUserLimit(limit);
 						_sendToEveryone(channel, "MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", i);
 						return (_printMessage("MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", this->_clients[i]->getNickname(), channel->getName()));

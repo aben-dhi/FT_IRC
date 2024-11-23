@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:45:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 23:22:32 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 10:36:29 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ Channel* Server::getChannelByName(const std::string& name)
     {
         return it->second;
     }
-    return nullptr;
+    return NULL;
 }
 
 Client* Server::getClientByNickname(const std::string& nickname)
@@ -132,7 +132,7 @@ Client* Server::getClientByNickname(const std::string& nickname)
             return it->second;
         }
     }
-    return nullptr;
+    return NULL;
 }
 
 std::string    Server::_sendToSender(Channel *Channel, std::string message, int fd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   requestHandling.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:19:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 05:25:08 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 10:42:19 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ Request Server::_splitRequest(std::string req)
 	request._args.erase(request._args.begin());
 	if(request._args.size() != 0)
 	{
-		if(!request._args[0].empty() && request._args[0].back() == '\n')
-			request._args[0].pop_back();
+		if(!request._args[0].empty() && request._args[0][request._args[0].size() - 1] == '\n')
+			request._args[0].erase(request._args[0].size() - 1);;
 	}
 	
 	return (request);
