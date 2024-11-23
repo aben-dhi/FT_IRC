@@ -6,7 +6,7 @@
 /*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 00:45:58 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 10:36:29 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/23 11:11:18 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ std::string Server::_printMessage(std::string message, std::string nickname, std
 	if (nickname.empty())
 		nickname = "*";
 	return (":" + this->_name + " " + message + " " + nickname + " " + channel + "\n");
+}
+
+std::string Server::_printMessage2(const std::string &command, const std::string &nickname, const std::string &hostname, const std::string &message)
+{
+    return ":" + nickname + "!" + nickname + "@" + hostname + " " + command + " " + message;
 }
 
 void	Server::_newClient()

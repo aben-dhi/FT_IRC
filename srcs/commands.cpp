@@ -6,7 +6,7 @@
 /*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 10:38:51 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:26:40 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ std::string Server::_topic(Request request, int i)
 	{
 		if (request._args.size() == 1)
 		{
-		std::cout<< "here" << std::endl;
 		if (this->_channels.find(request._args[0])->second->getTopic().empty())
 			return (_printMessage("331", this->_clients[i]->getNickname(), request._args[0] + " :No topic is set"));
 		else
@@ -112,7 +111,7 @@ std::string Server::_topic(Request request, int i)
 				std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";
 				_sendToEveryone(it->second, reply, i);
 			}
-			else if (user.second == -1  /* Not in channel */)
+			else if (user.second == -1)
 				return (_printMessage("442", this->_clients[i]->getNickname(), request._args[0] + " :You're not on that channel"));
 			else
 				return (_printMessage("482", this->_clients[i]->getNickname(), request._args[0] + " :You're not channel operator"));
@@ -123,29 +122,6 @@ std::string Server::_topic(Request request, int i)
 	
 	return ("");
 }
-
-// bool	Server::_validMode(Request request)
-// {
-// 	// we re rewriting this!!
-// 	char c = request._args[1][1];
-// 	if (request._args[1].length() != 2 || (request._args[1][0] != '-' && request._args[1][0] != '+') )
-// 		return (false);
-// 	if (c != 'a' && c != 'i' && c != 'w' && c != 'r' && c != 'o' && c != 'O' && c != 's')
-// 		return (false);
-// 	return (true);
-// }
-
-// std::string Server::_printUserModes(std::string ret, int i)
-// {
-// 	ret.append("a: " + std::string(to_cstr(this->_clients[i]->getModes('a'))));
-// 	ret.append("\ni: " + std::string(to_cstr(this->_clients[i]->getModes('i'))));
-// 	ret.append("\nw: " + std::string(to_cstr(this->_clients[i]->getModes('w'))));
-// 	ret.append("\nr: " + std::string(to_cstr(this->_clients[i]->getModes('r'))));
-// 	ret.append("\no: " + std::string(to_cstr(this->_clients[i]->getModes('o'))));
-// 	ret.append("\nO: " + std::string(to_cstr(this->_clients[i]->getModes('O'))));
-// 	ret.append("\ns: " + std::string(to_cstr(this->_clients[i]->getModes('s')) + "\n"));
-// 	return ret;
-// }
 
 std::string Server::_setMode(Request request, int i)
 {
@@ -161,7 +137,6 @@ std::string Server::_setMode(Request request, int i)
 
     std::string channelName = request._args[0];
     std::string modeChanges = request._args[1];
-	std::cout<<modeChanges<<std::endl;
     Channel *channel = getChannelByName(channelName);
 
     if (!channel)
@@ -186,13 +161,20 @@ std::string Server::_setMode(Request request, int i)
                 addMode = 0;
                 break;
             case 'i':
-				if (addMode != -1)
+				if (addMode == 1)
 				{
-                	channel->setInviteOnly(addMode);
+					channel->setInviteOnly(addMode);
+					std::string msg = _sendToEveryone2(channel, "MODE " + channel->getName() + " +i\n", i);
+				}
+				else if (addMode == 0)
+				{
+					channel->setInviteOnly(addMode);
+					std::cout<<channel->getName()<<std::endl;
+					std::string msg = _sendToEveryone2(channel, "MODE " + channel->getName() + " -i\n", i);
 				}
 				else
-					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
-                break;
+					return (_printMessage("472", this->_clients[i]->getNickname(), std::string(1, modeChanges[j]) + " :is unknown mode char to me"));
+				break;
             case 't':
 				if (addMode != -1)
 				{

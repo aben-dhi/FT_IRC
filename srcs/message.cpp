@@ -6,7 +6,7 @@
 /*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:41:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 09:46:59 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:09:16 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,26 @@ std::string	Server::_sendToEveryone(Channel *Channel, std::string message, int f
 			}
 		it++;
 	}
-	return("");
+	std::cout<<msg<<std::endl;
+	return(msg);
+}
+
+std::string Server::_sendToEveryone2(Channel *channel, std::string message, int fd)
+{
+    std::map<int, Client*> allUsers = channel->getAllUsers();
+    std::map<int, Client*>::iterator it = allUsers.begin();
+    std::string msg = this->_clients[fd]->getUserprefix() + message;
+    while (it != allUsers.end())
+    {
+        
+            if (_sendAll(it->first, msg) == -1)
+            {
+                std::cerr << "send: " << strerror(errno) << std::endl;
+                return "";
+            }
+        // }
+        it++;
+    }
+    std::cout << msg << std::endl;
+    return msg;
 }
