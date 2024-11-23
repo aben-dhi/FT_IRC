@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/24 00:26:29 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/24 00:48:28 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ std::string Server::_topic(Request request, int i)
 			{
 				it->second->setTopic(request._args[1]);
 				std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";
-				_sendToEveryone(it->second, reply, i);
+				_sendToEveryone2(it->second, reply, i);
 			}
 			else if (user.second == -1)
 				return (_printMessage("442", this->_clients[i]->getNickname(), request._args[0] + " :You're not on that channel"));
@@ -400,6 +400,8 @@ std::string	Server::_printHelpInfo()
 
 std::string Server::inviteRequest(Request request, int i)
 {
+	if (!this->_clients[i]->getRegistered())
+		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
     Client *client = getClientByNickname(request._args[0]);
     if (!client)
         return (_printMessage("401", this->_clients[i]->getNickname(), request._args[0] + " :No such nick"));
