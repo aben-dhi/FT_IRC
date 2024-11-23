@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:43:39 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 06:03:38 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 09:43:45 by ta9ra9           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,18 @@ std::string 	Server::_privToUser(std::string User, std::string message, std::str
 	return ("");
 };
 
-std::string     Server:: _privToChannel(std::string ChannelName, std::string message, int i)
+std::string 	Server:: _privToChannel(std::string ChannelName, std::string message, int i)
 {
-    std::map<std::string, Channel *>::iterator it = this->_channels.find(ChannelName);
-    if (it == this->_channels.end())
-    {
-        return (_printMessage("403", this->_clients[i]->getNickname(), ChannelName + " :No such channel"));
-    }
-
-    std::pair<Client *, int> user = it->second->findUserRole(i);
-    if (user.second == -1)
-    {
-        return (_printMessage("442", this->_clients[i]->getNickname(), ChannelName + " :You're not on that channel"));
-    }
-
-    std::string username = user.first->getNickname();
-    if (user.second == -1)
-    {
-        return (_printMessage("404", this->_clients[i]->getNickname(), ChannelName + " :Cannot send to channel"));
-    }
-
-    std::string msg(":" + this->_clients[i]->getUserprefix() + " PRIVMSG " + ChannelName + " :" + message + "\n");
-    _sendToEveryone(it->second, msg, i);
-
-    return ("");
-}
+	std::map<std::string, Channel *>::iterator it = this->_channels.find(ChannelName);
+	if (it != this->_channels.end())
+	{
+		std::pair<Client *, int> user = it->second->findUserRole(i);
+		if (user.second == -1 )
+			return (_printMessage("404", this->_clients[i]->getNickname(), ChannelName.append(" :Cannot send to channel")));
+		std::string msg("PRIVMSG " + ChannelName + " :" + message + "\n");
+		_sendToEveryone(it->second, msg, i);
+	}
+	else
+		return (_printMessage("401", this->_clients[i]->getNickname(), ChannelName.append(" :No such nick/channel")));
+	return ("");
+};
