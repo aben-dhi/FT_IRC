@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:03:02 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 04:35:51 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 05:55:29 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	Channel::addMember( Client *member )
 
 int	Channel::addOperator( Client *member )
 {
+	if (this->_creator->getClientfd() == member->getClientfd())
+		return (0);
 	if (std::find(this->_banned.begin(), this->_banned.end(), member->getNickname()) != this->_banned.end())
 		return (BANNEDFROMCHAN);
 	if (this->_operators.find(member->getClientfd()) == this->_operators.end())

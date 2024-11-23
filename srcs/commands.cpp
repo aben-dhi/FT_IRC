@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 05:24:07 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 05:56:48 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,78 +172,108 @@ std::string Server::_setMode(Request request, int i)
         return (_printMessage("482", this->_clients[i]->getNickname(), channelName + " :You're not channel operator"));
     Client *targetClient = getClientByNickname(request._args[2]);
 
-    bool addMode = true;
+    int addMode = -1;
     for (size_t j = 0; j < modeChanges.size(); ++j)
     {
         switch (modeChanges[j])
         {
             case '+':
-                addMode = true;
+                addMode = 1;
                 break;
             case '-':
-                addMode = false;
+                addMode = 0;
                 break;
             case 'i':
-                channel->setInviteOnly(addMode);
+				if (addMode != -1)
+				{
+                	channel->setInviteOnly(addMode);
+				}
+				else
+					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
                 break;
             case 't':
-                channel->setTopicRestricted(addMode);
-                break;
+				if (addMode != -1)
+				{
+					channel->setTopicRestricted(addMode);
+				}
+				else
+					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
+				break;
             case 'k':
-                if (addMode)
-                {
-                    if (request._args.size() < 3)
-                        return (_printMessage("461", this->_clients[i]->getNickname(), ":Key not provided"));
-                    channel->setModeKey(request._args[2]);
-                }
-                else
-                {
-                    channel->setModeKey("");
-                }
+				if (addMode != -1)
+				{
+            	    if (addMode)
+            	    {
+            	        if (request._args.size() < 3)
+            	            return (_printMessage("461", this->_clients[i]->getNickname(), ":Key not provided"));
+            	        channel->setModeKey(request._args[2]);
+            	    }
+            	    else
+            	    {
+            	        channel->setModeKey("");
+            	    }
+				}
+				else
+					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
                 break;
             case 'o':
-                if (request._args.size() < 3)
-                    return (_printMessage("461", this->_clients[i]->getNickname(), ":Nickname not provided"));
-                if (!targetClient)
-                    return (_printMessage("401", this->_clients[i]->getNickname(), request._args[2] + " :No such nick"));
-                if (addMode)
+				if (addMode != -1)
 				{
-                    channel->addOperator(targetClient);
-					_sendToEveryone(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
-					// _sendToSender(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
-					return(_printMessage("MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
-				}
-                else
-				{
-                    if (channel->removeOperator(i) == 0)
+                	if (request._args.size() < 3)
+                	    return (_printMessage("461", this->_clients[i]->getNickname(), ":Nickname not provided"));
+                	if (!targetClient)
+                	    return (_printMessage("401", this->_clients[i]->getNickname(), request._args[2] + " :No such nick"));
+                	if (addMode)
 					{
-					_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
-					// _sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
-					return(_printMessage("MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
+						if (channel->getCreator() != targetClient)
+						{
+							channel->addOperator(targetClient);
+							_sendToEveryone(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
+							// _sendToSender(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
+							return(_printMessage("MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
+						}
+						else
+							return (_printMessage("931", this->_clients[i]->getNickname(), request._args[2] + " :is the creator of the channel"));
 					}
-					else
-						return (_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is the creator of the channel"));
+                	else
+					{
+                	    if (channel->removeOperator(i) == 0)
+						{
+						_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
+						// _sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
+						return(_printMessage("MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
+						}
+						else
+							return (_printMessage("931", this->_clients[i]->getNickname(), request._args[2] + " :is the creator of the channel"));
+					}
 				}
+				else
+					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
                 break;
             case 'l':
-                if (addMode)
-                {
-                    if (request._args.size() < 3)
-                        return (_printMessage("461", this->_clients[i]->getNickname(), ":Limit not provided"));
-                    int limit = std::stoi(request._args[2]);
-                    channel->setUserLimit(limit);
-					_sendToEveryone(channel, "MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", i);
-                    return (_printMessage("MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", this->_clients[i]->getNickname(), channel->getName()));
-                }
-                else
-                {
-					if(channel->getUserLimit() == -1)
-                        return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
-                    channel->setUserLimit(-1);
-					_sendToEveryone(channel, "MODE " + channel->getName() + " -l\n", i);
-                    return (_printMessage("MODE " + channel->getName() + " -l\n", this->_clients[i]->getNickname(), channel->getName()));
-                }
-                break;
+				if (addMode != -1)
+				{
+					if (addMode)
+					{
+						if (request._args.size() < 3)
+							return (_printMessage("461", this->_clients[i]->getNickname(), ":Limit not provided"));
+						int limit = std::stoi(request._args[2]);
+						channel->setUserLimit(limit);
+						_sendToEveryone(channel, "MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", i);
+						return (_printMessage("MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", this->_clients[i]->getNickname(), channel->getName()));
+					}
+					else
+					{
+						if(channel->getUserLimit() == -1)
+							return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
+						channel->setUserLimit(-1);
+						_sendToEveryone(channel, "MODE " + channel->getName() + " -l\n", i);
+						return (_printMessage("MODE " + channel->getName() + " -l\n", this->_clients[i]->getNickname(), channel->getName()));
+					}
+				}
+				else
+					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
+            	break;
             default:
                 return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
         }
