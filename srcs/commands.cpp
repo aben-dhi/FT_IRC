@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 12:26:40 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/24 00:26:29 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,10 @@ std::string Server::_setMode(Request request, int i)
 				if (addMode != -1)
 				{
 					channel->setTopicRestricted(addMode);
+					if (addMode)
+						_sendToEveryone2(channel, "MODE " + channel->getName() + " +t\n", i);
+					else
+						_sendToEveryone2(channel, "MODE " + channel->getName() + " -t\n", i);
 				}
 				else
 					return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
@@ -191,10 +195,13 @@ std::string Server::_setMode(Request request, int i)
             	        if (request._args.size() < 3)
             	            return (_printMessage("461", this->_clients[i]->getNickname(), ":Key not provided"));
             	        channel->setModeKey(request._args[2]);
+						_sendToEveryone2(channel, "MODE " + channel->getName() + " +k " + request._args[2] + "\n", i);
+						
             	    }
             	    else
             	    {
             	        channel->setModeKey("");
+						_sendToEveryone2(channel, "MODE " + channel->getName() + " -k " + "\n", i);
             	    }
 				}
 				else
@@ -221,7 +228,7 @@ std::string Server::_setMode(Request request, int i)
 					}
                 	else
 					{
-                	    if (channel->removeOperator(i) == 0)
+                	    if (channel->removeOperator(targetClient->getClientfd()) == 0)
 						{
 						_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
 						// _sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
@@ -402,10 +409,8 @@ std::string Server::inviteRequest(Request request, int i)
     std::pair<Client *, int> user = channel->findUserRole(i);
     if (user.second != 1)
         return (_printMessage("482", this->_clients[i]->getNickname(), request._args[1] + " :You're not channel operator"));
-    if (!channel->isInviteOnly())
-        return (_printMessage("518", this->_clients[i]->getNickname(), request._args[1] + " :Channel is not invite only"));
-    if (client->isInChannel(channel->getName()))
-        return (_printMessage("443", this->_clients[i]->getNickname(), request._args[1] + " :You're already in that channel"));
+    // if (client->isInChannel(channel->getName()))
+    //     return (_printMessage("443", this->_clients[i]->getNickname(), request._args[1] + " :You're already in that channel"));
     std::map<std::string, Client *> listofbanned = channel->getBanned();
     if (listofbanned.find(client->getNickname()) != listofbanned.end())
         return (_printMessage("465", this->_clients[i]->getNickname(), request._args[1] + " :You're banned from that channel"));

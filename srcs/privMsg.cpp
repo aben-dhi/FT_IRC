@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:43:39 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 09:43:45 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/23 20:17:47 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ std::string	Server::_privmsg(Request request, int i)
 			if (j + 1 < request._args.size())
 				msg.append(" ");
 		}
-		if (request._args[0][0] != '&' && request._args[0][0] != '#' && request._args[0][0] != '+' && request._args[0][0] != '!')
+		if (request._args[0][0] != '&' && request._args[0][0] != '#')
 			return (_privToUser(request._args[0], msg, "PRIVMSG", i));
 		return (_privToChannel(request._args[0], msg, i));
 	}

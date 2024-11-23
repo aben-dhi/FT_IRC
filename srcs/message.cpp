@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   message.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ta9ra9 <ta9ra9@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 23:41:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 12:09:16 by ta9ra9           ###   ########.fr       */
+/*   Updated: 2024/11/23 22:48:52 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,42 +47,73 @@ int	Server::_sendAll(int fd, std::string message)
 	return (0);
 }
 
-std::string	Server::_sendToEveryone(Channel *Channel, std::string message, int fd)
+// std::string	Server::_sendToEveryone(Channel *Channel, std::string message, int fd)
+// {
+// 	std::map<int, Client*> allUsers = Channel->getAllUsers();
+// 	std::map<int, Client*>::iterator it = allUsers.begin();
+// 	std::string msg = this->_clients[fd]->getUserprefix();
+// 	msg.append(message);
+// 	while (it != allUsers.end())
+// 	{
+// 		if (it->first != fd)
+// 			if(_sendAll(it->first, msg) == -1)
+// 			{
+// 				std::cerr << "send: " << strerror(errno) << std::endl;
+// 				return("");
+// 			}
+// 		it++;
+// 	}
+// 	std::cout<<msg<<std::endl;
+// 	return(msg);
+// }
+
+std::string Server::_sendToEveryone(Channel *channel, std::string message, int fd)
 {
-	std::map<int, Client*> allUsers = Channel->getAllUsers();
-	std::map<int, Client*>::iterator it = allUsers.begin();
-	std::string msg = this->_clients[fd]->getUserprefix();
-	msg.append(message);
-	while (it != allUsers.end())
-	{
-		if (it->first != fd)
-			if(_sendAll(it->first, msg) == -1)
-			{
-				std::cerr << "send: " << strerror(errno) << std::endl;
-				return("");
-			}
-		it++;
-	}
-	std::cout<<msg<<std::endl;
-	return(msg);
+    std::map<int, Client*> allUsers = channel->getAllUsers();
+    std::map<int, Client*>::iterator it = allUsers.begin();
+
+    // Construct the full message with the prefix for the sender
+    std::string prefix = this->_clients[fd]->getUserprefix();
+    std::string fullMessage = prefix + " " + message; // Construct the full message
+
+    while (it != allUsers.end())
+    {
+        if (it->first != fd) // Don't send the message back to the sender
+        {
+            // Send the formatted message to each user in the channel
+            if (_sendAll(it->first, fullMessage + "\n") == -1) // Ensure new line at the end
+            {
+                std::cerr << "send: " << strerror(errno) << std::endl;
+                return ""; // Return empty on failure
+            }
+        }
+        it++;
+    }
+
+    std::cout << fullMessage << std::endl; // Log the sent message
+    return fullMessage; // Return the full message sent
 }
 
 std::string Server::_sendToEveryone2(Channel *channel, std::string message, int fd)
 {
     std::map<int, Client*> allUsers = channel->getAllUsers();
     std::map<int, Client*>::iterator it = allUsers.begin();
-    std::string msg = this->_clients[fd]->getUserprefix() + message;
+
+    // Construct the full message with the prefix for the sender
+    std::string prefix = this->_clients[fd]->getUserprefix();
+    std::string fullMessage = prefix + " " + message; // Construct the full message
+
     while (it != allUsers.end())
     {
-        
-            if (_sendAll(it->first, msg) == -1)
-            {
-                std::cerr << "send: " << strerror(errno) << std::endl;
-                return "";
-            }
-        // }
+        // Send the formatted message to each user in the channel
+        if (_sendAll(it->first, fullMessage + "\n") == -1) // Ensure new line at the end
+        {
+            std::cerr << "send: " << strerror(errno) << std::endl;
+            return ""; // Return empty on failure
+        }
         it++;
     }
-    std::cout << msg << std::endl;
-    return msg;
+
+    std::cout << fullMessage << std::endl; // Log the sent message
+    return fullMessage; // Return the full message sent
 }
