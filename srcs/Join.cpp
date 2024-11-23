@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 23:37:18 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 18:10:40 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 03:55:59 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ std::string	Server::_joinChannel( Request request, int i )
 	int j = 1;
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
+	if (request._args.size() == 0)
+		return (_printMessage("461", this->_clients[i]->getNickname(), " JOIN :Not enough parameters"));
 	 std::string ChannelName = request._args[0];
 	if (this->_clients[i]->isInChannel(ChannelName))
         return (_printMessage("443", this->_clients[i]->getNickname(), ChannelName + " :is already on channel"));
-	if (request._args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickname(), " JOIN :Not enough parameters"));
 	
 	if (request._args[0] == "0")
 		return(this->_clients[i]->leaveAllC());
@@ -86,7 +86,7 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 	std::map<std::string, Channel *>::iterator it = this->_channels.find(ChannelName);
 	if (it == this->_channels.end())
 	{
-		if (ChannelName[0] != '&' && ChannelName[0] != '#' && ChannelName[0] != '+' && ChannelName[0] != '!')
+		if (ChannelName[0] != '&' && ChannelName[0] != '#')
 			return (BADCHANMASK);
 		Channel *channel = new Channel(ChannelName, this->_clients[CreatorFd]);
 		this->_channels.insert(std::pair<std::string, Channel *>(ChannelName, channel));

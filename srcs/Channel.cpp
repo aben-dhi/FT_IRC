@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 13:03:02 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 07:02:06 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 04:35:51 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,12 @@ int	Channel::banUser( Client *member )
 	return (USERISBANNED);
 };
 
-void	Channel::removeOperator( int i)
+int	Channel::removeOperator( int i)
 {
+	if (this->_creator->getClientfd() == i)
+		return (-1);
 	this->_operators.erase(i);
+	return (0);
 	// this->_onlineUsers--;
 };
 

@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:19:03 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 22:08:18 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 05:25:08 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,11 @@ Request Server::_splitRequest(std::string req)
 		request._args.push_back(req.substr(j, i - j));
 	request._command = request._args[0];
 	request._args.erase(request._args.begin());
-	if(!request._args[0].empty() && request._args[0].back() == '\n')
-		request._args[0].pop_back();
+	if(request._args.size() != 0)
+	{
+		if(!request._args[0].empty() && request._args[0].back() == '\n')
+			request._args[0].pop_back();
+	}
 	
 	return (request);
 }

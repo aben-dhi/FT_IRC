@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 23:19:39 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 05:24:07 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,32 +86,41 @@ int Server::_findByNickname(std::string nickname)
 
 std::string Server::_topic(Request request, int i)
 {
+	
+	
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	if (request._args.size() == 0)
 		return (_printMessage("461", this->_clients[i]->getNickname(), " TOPIC :Not enough parameters"));
-	if (request._args.size() == 1)
+	if (request._args.size() >= 1 && (request._args[0].at(0) == '#' || request._args[0].at(0) == '&' ))
 	{
+		if (request._args.size() == 1)
+		{
+		std::cout<< "here" << std::endl;
 		if (this->_channels.find(request._args[0])->second->getTopic().empty())
 			return (_printMessage("331", this->_clients[i]->getNickname(), request._args[0] + " :No topic is set"));
 		else
 			return (_printMessage("332", this->_clients[i]->getNickname(), request._args[0] + " :" + this->_channels.find(request._args[0])->second->getTopic()));
-	}
-	std::map<std::string, Channel *>::iterator it = this->_channels.find(request._args[0]);
-	if (it != this->_channels.end())
-	{
-		std::pair<Client *, int> user = it->second->findUserRole(i);
-		if (user.second == 1 || (it->second->isTopicRestricted() == false))
-		{
-			it->second->setTopic(request._args[1]);
-			std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";
-			_sendToEveryone(it->second, reply, i);
 		}
-		else if (user.second == -1  /* Not in channel */)
-			return (_printMessage("442", this->_clients[i]->getNickname(), request._args[0] + " :You're not on that channel"));
-		else
-			return (_printMessage("482", this->_clients[i]->getNickname(), request._args[0] + " :You're not channel operator"));
+		std::map<std::string, Channel *>::iterator it = this->_channels.find(request._args[0]);
+		if (it != this->_channels.end())
+		{
+			std::pair<Client *, int> user = it->second->findUserRole(i);
+			if (user.second == 1 || (it->second->isTopicRestricted() == false))
+			{
+				it->second->setTopic(request._args[1]);
+				std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";
+				_sendToEveryone(it->second, reply, i);
+			}
+			else if (user.second == -1  /* Not in channel */)
+				return (_printMessage("442", this->_clients[i]->getNickname(), request._args[0] + " :You're not on that channel"));
+			else
+				return (_printMessage("482", this->_clients[i]->getNickname(), request._args[0] + " :You're not channel operator"));
+		}
 	}
+	else
+		return (_printMessage("403", this->_clients[i]->getNickname(), request._args[0] + " :No such channel"));
+	
 	return ("");
 }
 
@@ -201,15 +210,19 @@ std::string Server::_setMode(Request request, int i)
 				{
                     channel->addOperator(targetClient);
 					_sendToEveryone(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
-					_sendToSender(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
-					return(_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is now a channel operator"));
+					// _sendToSender(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
+					return(_printMessage("MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
 				}
                 else
 				{
-                    channel->removeOperator(i);
+                    if (channel->removeOperator(i) == 0)
+					{
 					_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
-					_sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
-					return (_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is no longer a channel operator"));
+					// _sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
+					return(_printMessage("MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
+					}
+					else
+						return (_printMessage("221", this->_clients[i]->getNickname(), request._args[2] + " :is the creator of the channel"));
 				}
                 break;
             case 'l':
@@ -219,14 +232,20 @@ std::string Server::_setMode(Request request, int i)
                         return (_printMessage("461", this->_clients[i]->getNickname(), ":Limit not provided"));
                     int limit = std::stoi(request._args[2]);
                     channel->setUserLimit(limit);
+					_sendToEveryone(channel, "MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", i);
+                    return (_printMessage("MODE " + channel->getName() + " +l " + to_cstr(limit) + "\n", this->_clients[i]->getNickname(), channel->getName()));
                 }
                 else
                 {
+					if(channel->getUserLimit() == -1)
+                        return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
                     channel->setUserLimit(-1);
+					_sendToEveryone(channel, "MODE " + channel->getName() + " -l\n", i);
+                    return (_printMessage("MODE " + channel->getName() + " -l\n", this->_clients[i]->getNickname(), channel->getName()));
                 }
                 break;
             default:
-                return (_printMessage("472", this->_clients[i]->getNickname(), std::string(1, modeChanges[j]) + " :is unknown mode char to me"));
+                return (_printMessage("472 " + this->_clients[i]->getNickname() + " " + std::string(1, modeChanges[j]) + " :is unknown mode char to me", "", ""));
         }
     }
 

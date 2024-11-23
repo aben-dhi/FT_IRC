@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:10:13 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 07:01:26 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 04:38:34 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class Channel
 		int	addMember(Client *member);
 		int	addOperator(Client *member);
 		int	banUser(Client *member);
-		void	removeOperator(int i);
+		int	removeOperator(int i);
 		void	removeBanned(std::string nickName);
 		void	removeMember(int i);
 
