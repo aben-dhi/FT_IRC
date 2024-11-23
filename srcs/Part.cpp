@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:38:16 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/22 18:10:59 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/23 06:27:22 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,37 @@ std::string	Server::_part( Request request, int i )
 		return (_printMessage("461", this->_clients[i]->getNickname(), " PART:Not enough parameters"));
 	std::vector<std::string>	parsChannels(_commaSeparator(request._args[0]));
 	std::vector<std::string>::iterator it = parsChannels.begin();
+	std::string nickname = this->_clients[i]->getNickname();
+	std::string username = this->_clients[i]->getUsername();
 	while (it != parsChannels.end())
 	{
+		std::string channelName = *it;
+		//remove first char from channelName if its # or &
+		// if (channelName[0] == '#' || channelName[0] == '&')
+		// 	channelName.erase(0, 1);
 		int j = 0;
-		if (request._args.size() == 2)
+		if (request._args.size() == 2) // PART with a reason
+		{
 			j = _partChannel(*it, i, request._args[1], 1);
-		else
+			return (_printMessage(nickname + "!" + 
+								username + "@" + 
+								"localhost" + " PART " + channelName + 
+								" :" + request._args[1] + "\n", 
+								nickname, channelName));
+		}
+		else // PART without a reason
+		{
 			j = _partChannel(*it, i, "", 1);
+			return (_printMessage(nickname + "!" + 
+								username + "@" + 
+								"localhost" + " PART " + channelName + "\n", 
+								nickname, channelName));
+		}
+
 		if (j == NOSUCHCHANNEL /* No such channel */)
-			return (_printMessage("403", this->_clients[i]->getNickname(), *it + " :No such channel"));
+			return (_printMessage("403", nickname, channelName + " :No such channel"));
 		if (j == NOTINCHANNEL /* Not in channel */)
-			return (_printMessage("442", this->_clients[i]->getNickname(), *it + " :You're not on that channel"));
+			return (_printMessage("442", nickname, channelName + " :You're not on that channel"));
 		it++;
 	}
 	return ("");
