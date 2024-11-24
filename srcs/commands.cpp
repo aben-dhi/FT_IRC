@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/24 04:39:00 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/24 04:40:10 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,8 +386,6 @@ std::string Server::inviteRequest(Request request, int i)
     if (!channel)
         return (_printMessage("403", this->_clients[i]->getNickname(), request._args[1] + " :No such channel"));
     std::pair<Client *, int> user = channel->findUserRole(i);
-    // if (user.second != 1)
-    //     return (_printMessage("482", this->_clients[i]->getNickname(), request._args[1] + " :You're not channel operator"));
     std::map<std::string, Client *> listofbanned = channel->getBanned();
     if (listofbanned.find(client->getNickname()) != listofbanned.end())
         return (_printMessage("465", this->_clients[i]->getNickname(), request._args[1] + " :You're banned from that channel"));
