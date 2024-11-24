@@ -169,7 +169,6 @@ std::string Server::_setMode(Request request, int i)
 				else if (addMode == 0)
 				{
 					channel->setInviteOnly(addMode);
-					std::cout<<channel->getName()<<std::endl;
 					std::string msg = _sendToEveryone2(channel, "MODE " + channel->getName() + " -i\n", i);
 				}
 				else
@@ -219,9 +218,7 @@ std::string Server::_setMode(Request request, int i)
 						if (channel->getCreator() != targetClient)
 						{
 							channel->addOperator(targetClient);
-							_sendToEveryone(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
-							// _sendToSender(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
-							return(_printMessage("MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
+							_sendToEveryone2(channel, "MODE " + channel->getName() + " +o " + targetClient->getNickname() + "\n", i);
 						}
 						else
 							return (_printMessage("931", this->_clients[i]->getNickname(), request._args[2] + " :is the creator of the channel"));
@@ -229,11 +226,7 @@ std::string Server::_setMode(Request request, int i)
                 	else
 					{
                 	    if (channel->removeOperator(targetClient->getClientfd()) == 0)
-						{
-						_sendToEveryone(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
-						// _sendToSender(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
-						return(_printMessage("MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", targetClient->getNickname() ,channel->getName()));
-						}
+							_sendToEveryone2(channel, "MODE " + channel->getName() + " -o " + targetClient->getNickname() + "\n", i);
 						else
 							return (_printMessage("931", this->_clients[i]->getNickname(), request._args[2] + " :is the creator of the channel"));
 					}
@@ -272,29 +265,6 @@ std::string Server::_setMode(Request request, int i)
 
     return (_printMessage("221", this->_clients[i]->getNickname(), modeChanges));
 }
-
-// std::string Server::_setMode(Request request, int i)
-// {
-// 	if (!this->_clients[i]->getRegistered())
-// 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
-// 	if (request._args.size() < 2)
-// 	{
-// 		std::string ret;
-// 		// if (request._args.size() == 1 && request._args[0] == this->_clients[i]->getNickname())
-// 		// 	return (_printUserModes(ret, i));
-// 		ret.append("461 " + this->_clients[i]->getNickname() + " :Not enough parameters\n");
-// 		return ret;
-// 	}
-// 	if (request._args[0] != this->_clients[i]->getNickname())
-// 		return (_printMessage("502", this->_clients[i]->getNickname(), ":Can't change mode for other users"));
-// 	if (!_validMode(request))
-// 		return (_printMessage("501", this->_clients[i]->getNickname(), ":Invalid mode"));
-// 	// if (request._args[1][0] == '+')
-// 	// 	this->_clients[i]->setModes(true, request._args[1][1]);
-// 	// else
-// 	// 	this->_clients[i]->setModes(false, request._args[1][1]);
-// 	return (_printMessage("221", this->_clients[i]->getNickname(), request._args[1]));
-// }
 
 std::string	Server::_setOper(Request request, int i)
 {
@@ -411,8 +381,6 @@ std::string Server::inviteRequest(Request request, int i)
     std::pair<Client *, int> user = channel->findUserRole(i);
     if (user.second != 1)
         return (_printMessage("482", this->_clients[i]->getNickname(), request._args[1] + " :You're not channel operator"));
-    // if (client->isInChannel(channel->getName()))
-    //     return (_printMessage("443", this->_clients[i]->getNickname(), request._args[1] + " :You're already in that channel"));
     std::map<std::string, Client *> listofbanned = channel->getBanned();
     if (listofbanned.find(client->getNickname()) != listofbanned.end())
         return (_printMessage("465", this->_clients[i]->getNickname(), request._args[1] + " :You're banned from that channel"));

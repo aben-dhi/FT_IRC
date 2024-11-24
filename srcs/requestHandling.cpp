@@ -48,11 +48,9 @@ void	Server::_ClientRequest(int i)
 		requests = splitBuffer(this->_clients[sender_fd]->get_buffer());
 		for(size_t i = 0; i < requests.size(); i++)
 		{
-			std::cout<<"["<<currentDateTime()<<"]:"<<requests[i]<<std::endl;
 			std::string ret = _parsing(requests[i], sender_fd);
 			if(ret == "QUIT")
 				return ;
-			std::cout<<"["<<currentDateTime()<<"]:"<<ret<<std::endl;
 			if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
 				std::cerr << "send() error:" << strerror(errno) << std::endl;
 		}
