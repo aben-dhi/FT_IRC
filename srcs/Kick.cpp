@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 23:39:29 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/23 22:50:38 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/24 04:01:57 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ std::string Server::_kickedFromChannel(std::string ChannelName, std::string mess
                 _sendToEveryone2(it->second, reply, i);
 
                 // Update channel state
-                it->second->banUser(this->_clients[ret]);
+                // it->second->banUser(this->_clients[ret]);
                 _partChannel(ChannelName, ret, "", 0);
             }
             return result; // Only error messages are returned

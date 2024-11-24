@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/24 03:56:24 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/24 04:02:25 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ std::string	Server::_setOper(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
 	if (request._args.size() < 2)
-		return (_printMessage("461", this->_clients[i]->getNickname(), "PASS :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickname(), "OPER :Not enough parameters"));
 	if (request._args[0] != "ADMIN")
 		return (_printMessage("464", this->_clients[i]->getNickname(), ":Username/Password incorrect"));
 	if (request._args[1] != "ROBOSERV")
