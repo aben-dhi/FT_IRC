@@ -308,7 +308,6 @@ std::string	Server::_setNickName(Request request, int i)
 			return (_printMessage("432", this->_clients[i]->getNickname(), request._args[0] + " :Erroneous nickname"));
 		j++;
 	}
-	//we'e checking by the clientfd instead of the nickname itself to allow people to reuse nicknames
 	int userIndex = _findByNickname(request._args[0]);
 	if (userIndex != USERNOTINCHANNEL && this->_clients[userIndex] != this->_clients[i])
     return (_printMessage("433", this->_clients[i]->getNickname(), request._args[0] + " :Nickname is already in use"));
@@ -385,7 +384,6 @@ std::string Server::inviteRequest(Request request, int i)
     Channel *channel = getChannelByName(request._args[1]);
     if (!channel)
         return (_printMessage("403", this->_clients[i]->getNickname(), request._args[1] + " :No such channel"));
-    std::pair<Client *, int> user = channel->findUserRole(i);
     std::map<std::string, Client *> listofbanned = channel->getBanned();
     if (listofbanned.find(client->getNickname()) != listofbanned.end())
         return (_printMessage("465", this->_clients[i]->getNickname(), request._args[1] + " :You're banned from that channel"));
