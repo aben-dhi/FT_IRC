@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/24 03:49:52 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/24 03:50:52 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,7 +370,7 @@ std::string	Server::_printHelpInfo()
 
 std::string Server::inviteRequest(Request request, int i)
 {
-	if (request._args.size() < 2)
+	if (request._args.size() < 3)
 		return (_printMessage("461", this->_clients[i]->getNickname(), "INVITE :Not enough parameters"));
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
