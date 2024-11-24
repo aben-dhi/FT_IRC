@@ -6,7 +6,7 @@
 /*   By: aben-dhi <aben-dhi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:45:34 by aben-dhi          #+#    #+#             */
-/*   Updated: 2024/11/24 04:02:25 by aben-dhi         ###   ########.fr       */
+/*   Updated: 2024/11/24 04:30:31 by aben-dhi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,41 +86,43 @@ int Server::_findByNickname(std::string nickname)
 
 std::string Server::_topic(Request request, int i)
 {
-	
-	
-	if (!this->_clients[i]->getRegistered())
-		return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
-	if (request._args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickname(), " TOPIC :Not enough parameters"));
-	if (request._args.size() >= 1 && (request._args[0].at(0) == '#' || request._args[0].at(0) == '&' ))
-	{
-		if (request._args.size() == 1)
-		{
-		if (this->_channels.find(request._args[0])->second->getTopic().empty())
-			return (_printMessage("331", this->_clients[i]->getNickname(), request._args[0] + " :No topic is set"));
-		else
-			return (_printMessage("332", this->_clients[i]->getNickname(), request._args[0] + " :" + this->_channels.find(request._args[0])->second->getTopic()));
-		}
-		std::map<std::string, Channel *>::iterator it = this->_channels.find(request._args[0]);
-		if (it != this->_channels.end())
-		{
-			std::pair<Client *, int> user = it->second->findUserRole(i);
-			if (user.second == 1 || (it->second->isTopicRestricted() == false))
-			{
-				it->second->setTopic(request._args[1]);
-				std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";
-				_sendToEveryone2(it->second, reply, i);
-			}
-			else if (user.second == -1)
-				return (_printMessage("442", this->_clients[i]->getNickname(), request._args[0] + " :You're not on that channel"));
-			else
-				return (_printMessage("482", this->_clients[i]->getNickname(), request._args[0] + " :You're not channel operator"));
-		}
-	}
-	else
-		return (_printMessage("403", this->_clients[i]->getNickname(), request._args[0] + " :No such channel"));
-	
-	return ("");
+    if (!this->_clients[i]->getRegistered())
+        return (_printMessage("451", this->_clients[i]->getNickname(), ":You have not registered"));
+    if (request._args.size() == 0)
+        return (_printMessage("461", this->_clients[i]->getNickname(), " TOPIC :Not enough parameters"));
+    if (request._args.size() >= 1 && (request._args[0].at(0) == '#' || request._args[0].at(0) == '&'))
+    {
+        std::map<std::string, Channel *>::iterator it = this->_channels.find(request._args[0]);
+        if (it == this->_channels.end())
+            return (_printMessage("403", this->_clients[i]->getNickname(), request._args[0] + " :No such channel"));
+
+        std::pair<Client *, int> user = it->second->findUserRole(i);
+        if (user.second == -1)
+            return (_printMessage("442", this->_clients[i]->getNickname(), request._args[0] + " :You're not on that channel"));
+
+        if (request._args.size() == 1)
+        {
+            if (it->second->getTopic().empty())
+                return (_printMessage("331", this->_clients[i]->getNickname(), request._args[0] + " :No topic is set"));
+            else
+                return (_printMessage("332", this->_clients[i]->getNickname(), request._args[0] + " :" + it->second->getTopic()));
+        }
+
+        // Check if the topic length exceeds the limit
+        const size_t MAX_TOPIC_LENGTH = 15; // Set your desired maximum topic length
+        if (request._args[1].length() > MAX_TOPIC_LENGTH)
+            return (_printMessage("413", this->_clients[i]->getNickname(), request._args[0] + " :Topic is too long"));
+
+        if (user.second == 1 || (it->second->isTopicRestricted() == false))
+        {
+            it->second->setTopic(request._args[1]);
+            std::string reply = "TOPIC " + it->second->getName() + ":" + request._args[1] + "\n";
+            _sendToEveryone2(it->second, reply, i);
+        }
+        else
+            return (_printMessage("482", this->_clients[i]->getNickname(), request._args[0] + " :You're not channel operator"));
+    }
+    return "";
 }
 
 std::string Server::_setMode(Request request, int i)
@@ -306,8 +308,11 @@ std::string	Server::_setNickName(Request request, int i)
 			return (_printMessage("432", this->_clients[i]->getNickname(), request._args[0] + " :Erroneous nickname"));
 		j++;
 	}
-	if (std::find(this->_nicknames.begin(), this->_nicknames.end(), request._args[0]) != this->_nicknames.end())
-		return (_printMessage("433", this->_clients[i]->getNickname(), request._args[0] + " :Nickname is already in use"));
+	//we'e checking by the clientfd instead of the nickname itself to allow people to reuse nicknames
+	int userIndex = _findByNickname(request._args[0]);
+	if (userIndex != USERNOTINCHANNEL && this->_clients[userIndex] != this->_clients[i])
+    return (_printMessage("433", this->_clients[i]->getNickname(), request._args[0] + " :Nickname is already in use"));
+	
 
 	this->_clients[i]->setNickname(request._args[0]);
 	this->_nicknames.push_back(this->_clients[i]->getNickname());
