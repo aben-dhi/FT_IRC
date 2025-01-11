@@ -8,7 +8,7 @@ This project is an implementation of an Internet Relay Chat (IRC) server. IRC is
 
 The project is organized into several directories and files:
 
-![Project Structure](path-to-your-image/project-structure.png)
+![Project Structure](structure.png)
 
 ---
 
