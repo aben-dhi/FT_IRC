@@ -87,11 +87,11 @@ Replace <port> with the desired port number and <password> with the server passw
 
 ## Features
 
--**Client Authentication: Clients must authenticate using a password before joining the server.
--**Channel Management: Clients can create, join, and leave channels. Channel operators can manage channel settings and kick users.
--**Private Messaging: Clients can send private messages to other users or channels.
--**File Transfer: Clients can send and receive files.
--**Bot Service: Provides server statistics and information through a bot.
+- **Client Authentication** : Clients must authenticate using a password before joining the server.
+- **Channel Management** : Clients can create, join, and leave channels. Channel operators can manage channel settings and kick users.
+- **Private Messaging** : Clients can send private messages to other users or channels.
+- **File Transfer** : Clients can send and receive files.
+- **Bot Service** : Provides server statistics and information through a bot.
 
 ---
 
